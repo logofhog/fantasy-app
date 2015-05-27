@@ -1,5 +1,3 @@
-- flash[:notice] = "This is a test"
-!!!
 %html
   %head
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
@@ -9,7 +7,7 @@
     = javascript_include_tag :application
     = csrf_meta_tags
     = yield(:head)
-  %body
+  %body{"ng-app"  => 'fantasy_app'}
     %header.navbar.navbar-fixed-top.navbar-inverse
       %nav.navbar-inner
         .container
@@ -20,5 +18,9 @@
           .span12
             -#= render 'layouts/messages'
             = yield
+          %div{"ng-controller"  => "HomeCtrl"}
+            {{test}}
+          %a(ui-sref="testState")link to test state
+          %div(ui-view)
         %footer
 
