@@ -5,7 +5,6 @@ gem 'rails', '4.2'
 gem 'haml-rails', '~> 0.9'
 gem 'angular-rails-templates'
 
-# Use sqlite3 as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
