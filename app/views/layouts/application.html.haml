@@ -8,19 +8,15 @@
     = csrf_meta_tags
     = yield(:head)
   %body{"ng-app"  => 'fantasy_app'}
-    %header.navbar.navbar-fixed-top.navbar-inverse
-      %nav.navbar-inner
-        .container
+    %div(nav_bar)
   #main{:role => "main"}
     .container
       .content
         .row
           .span12
             -#= render 'layouts/messages'
-            = yield
           %div{"ng-controller"  => "HomeCtrl"}
             {{test}}
-          %a(ui-sref="testState")link to test state
           %div(ui-view)
         %footer
 

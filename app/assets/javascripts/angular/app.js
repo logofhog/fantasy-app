@@ -1,8 +1,16 @@
 angular.module('fantasy_app', ['ui.router', 'templates', 'restangular'])
   .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
-      .state('testState', {
-        url: "/test_state",
-        templateUrl: "/test_state.html"
-      });
+      .state('search', {
+        url: "/search",
+        templateUrl: "search.html"
+      })
+      .state('players', {
+        url: "/players",
+        templateUrl: "players_home.html"
+      })
+      .state('teams', {
+        url: "/teams",
+        templateUrl: "teams_home.html"
+      })
   });
