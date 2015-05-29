@@ -1,4 +1,4 @@
-angular.module('fantasy_app', ['ui.router', 'templates', 'restangular'])
+angular.module('fantasy_app', ['ui.router', 'templates'])
   .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
       .state('search', {
