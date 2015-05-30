@@ -125,5 +125,5 @@ ActiveRecord::Schema.define(version: 1) do
     t.string "city",    limit: 30
     t.string "name",    limit: 30
   end
-
 end
+

@@ -12,6 +12,7 @@ angular.module('fantasy_app')
         .error(getPlayersError);
 
       function getPlayersComplete(data, status, headers, config) {
+        console.log(data);
         return data;
       }
 
