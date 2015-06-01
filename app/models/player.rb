@@ -1,8 +1,20 @@
 class Player < ActiveRecord::Base
   self.primary_key = :player_id
 
+  POINT_MULTIPLES = {
+    :passing_yds  => 25,
+    :passing_tds => 4,
+    :passing_int => -1,
+    :rushing_yds => 10,
+    :rushing_tds => 6,
+    :receiving_yds => 10,
+    :receiving_tds => 6,
+    :receiving_rec => 2
+  }
+
   class << self
     def all(options, page = 0)
+
 
       red_zone = options[:is_red_zone] ? 'rz_' : ''
       stat = options[:is_sum] ? 'sum' : 'avg'
@@ -13,9 +25,15 @@ class Player < ActiveRecord::Base
 
       query = "
       select players.player_id, players.full_name, players.position,
-      #{stats_query(stat)}
-      (#{stat}(passing_yds)/25.00) + (#{stat}(passing_tds)*4) + (#{stat}(passing_int)*-1) + (#{stat}(rushing_yds)/10.00) + (#{stat}(rushing_tds)*6)
-      + (#{stat}(receiving_yds)/10.00) + (#{stat}(receiving_tds)*6) + (#{stat}(receiving_rec)/2.00)
+      #{stats_query(stat)} (
+      #{stat}(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
+      #{stat}(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
+      #{stat}(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
+      #{stat}(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
+      #{stat}(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
+      #{stat}(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
+      #{stat}(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
+      #{stat}(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]}))
       as total_points
       from players
       inner join #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
@@ -61,6 +79,5 @@ class Player < ActiveRecord::Base
     end
 
   end
-
 
 end
