@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
   }
 
   class << self
-    def all(options, page = 0)
+    def all_players(options, page = 0)
 
 
       red_zone = options[:is_red_zone] ? 'rz_' : ''

@@ -1,10 +1,11 @@
 class PlayersController < ApplicationController
   def index
-    render json: {:players => Player.all(options)}
+    render json: {:players => Player.all_players(options)}
   end
 
   def show
-    Player.find(params[:id])
+    player = Player.find(params[:id])
+    render json: player
   end
 
   private
