@@ -7,12 +7,6 @@ class PlayersController < ApplicationController
     Player.find(params[:id])
   end
 
-  class << self
-    def all
-      Player.all(options, page)
-    end
-  end
-
   private
 
   def page
