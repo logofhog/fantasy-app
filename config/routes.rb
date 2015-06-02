@@ -5,5 +5,7 @@ FantasyApp::Application.routes.draw do
   get '/players', :to => 'players#index'
   get '/players/:id', :to => 'players#show'
 
+  get '/teams', :to => 'teams#index'
+
 end
 
