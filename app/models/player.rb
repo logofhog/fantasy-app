@@ -14,8 +14,6 @@ class Player < ActiveRecord::Base
 
   class << self
     def all_players(options, page = 0)
-
-
       red_zone = options[:is_red_zone] ? 'rz_' : ''
       stat = options[:is_sum] ? 'sum' : 'avg'
       season_year = 2014
@@ -25,16 +23,7 @@ class Player < ActiveRecord::Base
 
       query = "
       select players.player_id, players.full_name, players.position,
-      #{stats_query(stat)} (
-      #{stat}(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
-      #{stat}(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
-      #{stat}(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
-      #{stat}(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
-      #{stat}(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
-      #{stat}(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
-      #{stat}(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
-      #{stat}(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]}))
-      as total_points
+      #{stats_query(stat)}, #{total_points(stat)}
       from players
       inner join #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
       where players.player_id in (
@@ -53,6 +42,19 @@ class Player < ActiveRecord::Base
       ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
     end
 
+    def total_points stat
+      "(
+      #{stat}(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
+      #{stat}(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
+      #{stat}(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
+      #{stat}(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
+      #{stat}(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
+      #{stat}(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
+      #{stat}(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
+      #{stat}(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+      ) as total_points"
+    end
+
     def stats_query stat
       "
       #{stat}(passing_yds) as passing_yds,
@@ -66,7 +68,7 @@ class Player < ActiveRecord::Base
       #{stat}(receiving_yds) as receiving_yds,
       #{stat}(receiving_tds) as receiving_tds,
       #{stat}(receiving_rec) as receiving_rec,
-      #{stat}(receiving_tar) as receiving_tar,
+      #{stat}(receiving_tar) as receiving_tar
       "
     end
 
@@ -79,5 +81,5 @@ class Player < ActiveRecord::Base
     end
 
   end
-
 end
+
