@@ -36,15 +36,15 @@ class Player < ActiveRecord::Base
       omit_weeks = options[:omit_weeks] || [-1]
 
       query = "
-      select players.player_id, players.full_name, players.position,
+      SELECT players.player_id, players.full_name, players.position,
       #{stats_query(stat)}, #{total_points(stat)}
-      from players
-      inner join #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
-      where players.player_id in (
-      select distinct #{red_zone}game_stats.player_id from #{red_zone}game_stats) and season_type= 'Regular' #{weeks}
-      #{show_positions} and season_year = #{season_year}
-      group by players.player_id, players.full_name, players.position
-      order by #{sort_by} desc limit(25) offset(?);
+      FROM players
+      INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
+      WHERE players.player_id IN (
+      SELECT DISTINCT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats) AND season_type= 'Regular' #{weeks}
+      #{show_positions} AND season_year = #{season_year}
+      GROUP BY players.player_id, players.full_name, players.position
+      ORDER BY #{sort_by} DESC limit(25) offset(?);
       "
 
       records_array(query, page)
