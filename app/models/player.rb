@@ -1,5 +1,6 @@
 class Player < ActiveRecord::Base
   self.primary_key = :player_id
+  has_many :game_stats
 
   POINT_MULTIPLES = {
     :passing_yds  => 25,
@@ -11,6 +12,17 @@ class Player < ActiveRecord::Base
     :receiving_tds => 6,
     :receiving_rec => 2
   }
+
+  def week_stats
+    stats = self.game_stats
+  end
+
+  def season_total
+    query = "
+      select #{Player.stats_query('sum')} from game_stats where game_stats.player_id = '#{player_id}'
+    "
+    Player.records_array(query)
+  end
 
   class << self
     def all_players(options, page = 0)
@@ -36,9 +48,7 @@ class Player < ActiveRecord::Base
       records_array(query, page)
     end
 
-    private
-
-    def records_array(query, page)
+    def records_array(query, page=0)
       ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
     end
 
@@ -79,7 +89,6 @@ class Player < ActiveRecord::Base
     def show_positions(positions = false)
       "and players.positions in #{positions}" if positions
     end
-
   end
 end
 

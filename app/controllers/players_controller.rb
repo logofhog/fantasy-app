@@ -4,11 +4,24 @@ class PlayersController < ApplicationController
   end
 
   def show
-    player = Player.find(params[:id])
     render json: player
   end
 
+  def season_total
+    stats = player.season_total #add param for year
+    render json: {player: player, stats: stats}
+  end
+
+  def by_week
+    stats = player.week_stats
+    render json: {player: player, stats: stats}
+  end
+
   private
+
+  def player
+    Player.find(params[:id])
+  end
 
   def page
     params[:page] || 1
