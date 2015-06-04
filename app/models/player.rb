@@ -1,6 +1,8 @@
 class Player < ActiveRecord::Base
   self.primary_key = :player_id
   has_many :game_stats
+  has_many :teams, foreign_key: 'team'
+  has_many :games, through: :game_stats, foreign_key: :gsis_id
 
   POINT_MULTIPLES = {
     :passing_yds  => 25,
