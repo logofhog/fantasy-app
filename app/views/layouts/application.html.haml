@@ -5,6 +5,7 @@
     %meta{:content => content_for?(:description) ? yield(:description) : "App_Name", :name => "description"}
     = stylesheet_link_tag :application, :media => "all"
     = javascript_include_tag :application
+    %script{:src => "http://code.highcharts.com/highcharts.js"}
     = csrf_meta_tags
     = yield(:head)
   %body{"ng-app"  => 'fantasy_app'}
@@ -15,8 +16,6 @@
         .row
           .span12
             -#= render 'layouts/messages'
-          %div{"ng-controller"  => "HomeCtrl"}
-            {{test}}
           %div(ui-view)
         %footer
 

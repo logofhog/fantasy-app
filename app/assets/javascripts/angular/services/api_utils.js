@@ -1,5 +1,5 @@
 angular.module('fantasy_app')
-  .factory('api_utils', function($http){
+  .factory('apiUtils', function($http){
     return {
       getPlayers: getPlayers,
       getPlayer: getPlayer,
@@ -8,11 +8,10 @@ angular.module('fantasy_app')
 
     function getPlayers(){
       return $http.get('/players')
-        .success(getPlayersComplete)
+        .success(getPlayersSuccess)
         .error(getPlayersError);
 
-      function getPlayersComplete(data, status, headers, config) {
-        console.log(data);
+      function getPlayersSuccess(data, status, headers, config) {
         return data;
       }
 
