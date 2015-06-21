@@ -16,17 +16,13 @@ angular.module('fantasy_app')
               type: 'bar',
               height: '700'
             },
-
             title: {text: 'Players Points'},
-
             xAxis: {
               categories: playerStatUtils.getPlayers(scope.items)
             },
-
             legend: {
               reversed: true
             },
-
             plotOptions: {
               series: {
                 stacking: 'normal',
@@ -34,7 +30,6 @@ angular.module('fantasy_app')
                 groupPadding: 0.1
               }
             },
-
             series: [
               { name: 'Passing',
                 data: playerStatUtils.getPassing(scope.items)
@@ -46,7 +41,6 @@ angular.module('fantasy_app')
                 data: playerStatUtils.getReceiving(scope.items)
               }
             ],
-
             tooltip: {
               shared: true,
               useHTML: true,
@@ -57,6 +51,9 @@ angular.module('fantasy_app')
                 return template
               }
             }
+          }); //end HighChart.Chart
+        }//end makeChart
+
             //  keeping this for advanced stat functionality
 //            series: [
 //              {name: 'Passing Yards',
@@ -84,28 +81,27 @@ angular.module('fantasy_app')
 //               data: getData('receiving_rec').map(function(p) {return p/2})
 //              }
 //            ]
-          }) //end HighChart.Chart
 
-
-          var stat_names = playerStatUtils.stat_names
-
-          function makeTemplate(player) {
-            var stats = playerStatUtils.removeUselessKeys(player);
-            var template = ["<span id='tooltip_name'>", player.full_name, "</span><table id='player_tooltip_table'>"]
-            for (var k in stats) {
-              template = template.concat(["<tr","class='" + stats[k].stat_name + "'", "><td>", stat_names[stats[k].stat_name],
-                                          "</td><td style='text-align: right'>", stats[k].stat_value, "</td></tr>"]);
-            }
-            template = template.join(' ');
-            return template
-          }
 
 //          function getData(stat) {
 //            var data = scope.items.map(function(player) { return parseInt(player[stat])});
 //            return data
 //          }
 
+
+        var stat_names = playerStatUtils.stat_names
+
+        function makeTemplate(player) {
+          var stats = playerStatUtils.removeUselessKeys(player);
+          var template = ["<span id='tooltip_name'>", player.full_name, "</span><table id='player_tooltip_table'>"]
+          for (var k in stats) {
+            template = template.concat(["<tr","class='" + stats[k].stat_name + "'", "><td>", stat_names[stats[k].stat_name],
+                                        "</td><td style='text-align: right'>", stats[k].stat_value, "</td></tr>"]);
+          }
+          template = template.join(' ');
+          return template
         }
+
         scope.$watch('items', function(newvalue) {
           makeChart();
         });
