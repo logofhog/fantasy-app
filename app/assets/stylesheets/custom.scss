@@ -1,0 +1,25 @@
+#player_tooltip_table {
+  width: 190px;
+  td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .total_points {
+    background-color: yellow;
+    font-weight: bold;
+  }
+  .passing_yds, .passing_tds {
+    background-color: #7CB5EC;
+  }
+  .receiving_yds, .receiving_tds, .receiving_rec {
+    background-color: #90ED7D;
+  }
+  .rushing_yds, .rushing_tds {
+    background-color: #434348;
+  }
+}
+
+#tooltip_name {
+  font-weight: bold;
+  font-size: 150%;
+}

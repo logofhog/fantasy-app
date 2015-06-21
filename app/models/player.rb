@@ -5,14 +5,14 @@ class Player < ActiveRecord::Base
   has_many :games, through: :game_stats, foreign_key: :gsis_id
 
   POINT_MULTIPLES = {
-    :passing_yds  => 25,
-    :passing_tds => 4,
-    :passing_int => -1,
-    :rushing_yds => 10,
-    :rushing_tds => 6,
-    :receiving_yds => 10,
-    :receiving_tds => 6,
-    :receiving_rec => 2
+    :passing_yds  => 25.0,
+    :passing_tds => 4.0,
+    :passing_int => -1.0,
+    :rushing_yds => 10.0,
+    :rushing_tds => 6.0,
+    :receiving_yds => 10.0,
+    :receiving_tds => 6.0,
+    :receiving_rec => 2.0
   }
 
   def week_stats
