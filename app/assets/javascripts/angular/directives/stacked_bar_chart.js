@@ -1,5 +1,5 @@
 angular.module('fantasy_app')
-  .directive('stackedBarChart', function(){
+  .directive('stackedBarChart', function(playerStatUtils){
     return {
       scope: {
         items: '='
@@ -20,7 +20,7 @@ angular.module('fantasy_app')
             title: {text: 'Players Points'},
 
             xAxis: {
-              categories: getPlayers()
+              categories: playerStatUtils.getPlayers(scope.items)
             },
 
             legend: {
@@ -37,13 +37,13 @@ angular.module('fantasy_app')
 
             series: [
               { name: 'Passing',
-                data: getPassing()
+                data: playerStatUtils.getPassing(scope.items)
               },
               { name: 'Rushing',
-                data: getRushing()
+                data: playerStatUtils.getRushing(scope.items)
               },
               { name: 'Receiving',
-                data: getReceiving()
+                data: playerStatUtils.getReceiving(scope.items)
               }
             ],
 
@@ -51,8 +51,8 @@ angular.module('fantasy_app')
               shared: true,
               useHTML: true,
               formatter: function()  {
-                statsDict();
-                var player = scope.dict[this.x];
+                var statsDict = playerStatUtils.statsDict(scope.items);
+                var player = statsDict[this.x];
                 template = makeTemplate(player);
                 return template
               }
@@ -86,19 +86,11 @@ angular.module('fantasy_app')
 //            ]
           }) //end HighChart.Chart
 
-          var stat_names = {
-            passing_yds : 'Passing Yards',
-            passing_tds : 'Passing TDs',
-            rushing_yds : 'Rushing Yards',
-            rushing_tds : 'Rushing TDs',
-            receiving_yds : 'Receiving Yards',
-            receiving_tds : 'Receiving TDs',
-            receiving_rec : 'Receptions',
-            total_points: 'Total Points'
-          }
+
+          var stat_names = playerStatUtils.stat_names
 
           function makeTemplate(player) {
-            var stats = removeUselessKeys(player);
+            var stats = playerStatUtils.removeUselessKeys(player);
             var template = ["<span id='tooltip_name'>", player.full_name, "</span><table id='player_tooltip_table'>"]
             for (var k in stats) {
               template = template.concat(["<tr","class='" + stats[k].stat_name + "'", "><td>", stat_names[stats[k].stat_name],
@@ -108,61 +100,12 @@ angular.module('fantasy_app')
             return template
           }
 
-          function removeUselessKeys(player) {
-            var stats = $.map(player, function(value, index) {
-              if (value === '0' || !(index in stat_names)) { return }
-              return {stat_name: index, stat_value: parseInt(value)}
-            });
-            return stats
-          }
+//          function getData(stat) {
+//            var data = scope.items.map(function(player) { return parseInt(player[stat])});
+//            return data
+//          }
 
-          function statsDict(){
-            if (typeof(scope.dict) != 'undefined') { return scope.dict }
-
-            scope.dict = {};
-            for (i in scope.items) {
-              scope.dict[scope.items[i].full_name] = scope.items[i];
-            }
-          }
-
-          function getData(stat) {
-            var data = scope.items.map(function(player) { return parseInt(player[stat])});
-            return data
-          }
-
-          function getPlayers() {
-            var players = scope.items.map(function(player) { return player.full_name });
-            return players
-          }
-
-          function getPassing(){
-            var data = scope.items.map(function(player) {
-              var total = (parseInt(player.passing_yds) /25) +
-                          (parseInt(player.passing_tds) * 4) +
-                          (parseInt(player.passing_int) * -1)
-              return Math.round(total)
-            });
-            return data
-          }
-          function getRushing(){
-            var data = scope.items.map(function(player) {
-              var total = (parseInt(player.rushing_yds) /10) +
-                          (parseInt(player.rushing_tds) * 6)
-              return Math.round(total)
-            });
-            return data
-          }
-          function getReceiving(){
-            var data = scope.items.map(function(player) {
-              var total = (parseInt(player.receiving_yds) / 10) +
-                          (parseInt(player.receiving_tds) * 6) +
-                          (parseInt(player.receiving_rec) / 2)
-              return Math.round(total)
-            });
-            return data
-          }
         }
-
         scope.$watch('items', function(newvalue) {
           makeChart();
         });
