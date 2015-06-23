@@ -5,8 +5,6 @@
     %meta{:content => content_for?(:description) ? yield(:description) : "App_Name", :name => "description"}
     = stylesheet_link_tag :application, :media => "all"
     = javascript_include_tag :application
-    %script{:src => "http://code.highcharts.com/highcharts.js"}
-    %script{:src => "http://code.highcharts.com/modules/exporting.js"}
     = csrf_meta_tags
     = yield(:head)
   %body{"ng-app"  => 'fantasy_app'}
@@ -19,4 +17,5 @@
             -#= render 'layouts/messages'
           %div(ui-view)
         %footer
+    %script{:src => "assets/highcharts-release/themes/dark-unica.js"}
 

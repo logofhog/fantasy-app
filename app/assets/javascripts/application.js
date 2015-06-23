@@ -3,5 +3,8 @@
 //= require lodash
 //= require angular-ui-router
 //= require angular-rails-templates
+//= require highcharts-release
+//= require highcharts-release/modules/exporting
+//= require nouislider/distribute/jquery.nouislider.all.js
 //= require_tree ./angular
 //= require_tree .

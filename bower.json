@@ -14,5 +14,6 @@
     "lodash": "~2.4.1",
     "angular": "~1.2.22",
     "angular-ui-router": "~0.2.10",
+    "nouislider": "~7.0.10"
   }
 }

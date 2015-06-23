@@ -1,4 +1,3 @@
-
 angular.module('fantasy_app')
   .service('playerStatUtils', function(){
 

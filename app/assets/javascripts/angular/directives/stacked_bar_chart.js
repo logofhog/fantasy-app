@@ -88,6 +88,8 @@ angular.module('fantasy_app')
 //            return data
 //          }
 
+        // Apply the theme
+//        Highcharts.setOptions(Highcharts.theme);
 
         var stat_names = playerStatUtils.stat_names
 
@@ -104,6 +106,7 @@ angular.module('fantasy_app')
 
         scope.$watch('items', function(newvalue) {
           makeChart();
+          console.log(Highcharts.theme);
         });
       }
     }
