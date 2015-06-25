@@ -106,7 +106,6 @@ angular.module('fantasy_app')
 
         scope.$watch('items', function(newvalue) {
           makeChart();
-          console.log(Highcharts.theme);
         });
       }
     }

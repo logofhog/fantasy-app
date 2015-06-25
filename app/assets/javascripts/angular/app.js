@@ -9,6 +9,12 @@ angular.module('fantasy_app', ['ui.router', 'templates'])
         url: "/players",
         templateUrl: "players_home.html"
       })
+      .state('player', {
+        url: "/player/:id",
+        templateUrl: "player.html",
+        controller: "playerCtrl",
+        controllerAs: "vm"
+      })
       .state('teams', {
         url: "/teams",
         templateUrl: "teams_home.html"

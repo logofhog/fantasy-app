@@ -53,16 +53,6 @@ angular.module('fantasy_app')
           }
         }
 
-        function updateWeeks(start, end, value) {
-          console.log(start, end)
-          for (var i=1; i<start; i++) {
-            scope.weeks[i] = value;
-          }
-          for (var i=end+1; i<=17; i++) {
-            scope.weeks[i] = value;
-          }
-        }
-
         function range() {
           var range = {}
           for (var i=1; i<=17; i++) {
