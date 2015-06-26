@@ -8,36 +8,39 @@ angular.module('fantasy_app')
       link: function(scope, elem, attrs) {
 
         scope.$watch('items', function(newvalue) {
-          console.log(scope.items);
-          if (! scope.items) { return }
-          console.log(scope.items.stats.length)
-          makeChart();
-        });
+          if (! scope.items || Object.keys(scope.items).length == 0) { return }
+          var series = seriesValues(scope.items.series);
+          makeChart(series, scope.items.title, 17);
+        }, true);
 
-        //player data
-        //
-        // title
-        // name
-        // stats
-        //
+        function seriesValues(data) {
+          var series = [];
+          for (key in data) {
+            var series_obj = {};
+            series_obj['name'] = data[key].player.full_name;
+            series_obj['data'] = data[key].stats.map(function(x, i) { return [i+1, x || null] } );
+            series.push(series_obj);
+          }
+          return series;
+        }
 
-        function makeChart() {
+        function makeChart(series, title, ticks) {
           $('#container').highcharts({
             chart: {
                     type: 'spline'
             },
-            title: {text: scope.items.title},
+            title: {text: title},
             legend: {
               layout: 'vertical',
               align: 'right'
             },
             xAxis: {
-              tickAmount: scope.items.stats.length,
+              tickAmount: ticks,
               tickInterval: 1,
               title: {text: 'Weeks'}
             },
             yAxis: {
-              title: {text: scope.items.title}
+              title: {text: title}
             },
             plotOptions: {
               spline: {
@@ -46,12 +49,7 @@ angular.module('fantasy_app')
                 }
               }
             },
-            series: [
-              {
-               name: scope.items.player.full_name,
-               data: scope.items.stats.map(function(x, i) { return [i+1, x || null] } )
-              }
-            ]
+            series: series
           });//end highcharts
         }// end makeChart()
 

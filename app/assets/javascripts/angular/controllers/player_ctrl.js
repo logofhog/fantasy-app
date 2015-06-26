@@ -1,23 +1,53 @@
 angular.module('fantasy_app')
   .controller('playerCtrl', function($stateParams, apiUtils, $scope){
     var vm = this;
+    var players_to_graph = {};
 
     init();
     var show_stat;
 
-    // vm.items = name: title: stats:
-    //
+    function init() {
+      getPlayerData($stateParams.id).then(function(response) {
+        players_to_graph[response.player.player_id] = response;
+        resetGraph()
+      });
+    }
+
     vm.changeStat = function(stat) {
       show_stat = stat;
     }
 
-    function init() {
-      getPlayerData($stateParams.id).then(function(response) {
-        vm.items = {};
-        vm.items.stats = stats(response.stats, 'passing_yds');
-        vm.items.player = response.player;
-        vm.items.title = 'Passing Yards';
+    vm.addPlayer = function() {
+      var player_id = "00-0029668"
+      getPlayerData(player_id).then(function(response) {
+        players_to_graph[response.player.player_id] = response;
+        resetGraph();
       });
+    }
+
+    vm.removePlayer = function(id) {
+      var id = "00-0029668"
+      delete players_to_graph[id];
+      resetGraph();
+    }
+
+    function resetGraph() {
+      vm.items = {series: {}}
+      for (p in players_to_graph) {
+        graphData(players_to_graph[p]);
+      }
+    }
+
+// "00-0023459" arod
+//  00-0026143 matt ryan
+//  "00-0029668" a luck
+
+    function graphData(response, stat) {
+      var player_obj = {};
+      player_obj.stats = stats(response.stats, 'passing_yds');
+      player_obj.player = response.player;
+      vm.items.title = 'Passing TDs';
+      vm.items.series[player_obj.player.player_id] = player_obj
     }
 
     function stats(data, stat) {

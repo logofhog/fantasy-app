@@ -1,5 +1,7 @@
 this is one player, from player.html.haml
 %button{'ng-click' =>'vm.changeStat("passing_yds")'} passing yards
 %button{'ng-click' =>'vm.changeStat("passing_tds")'} passing tds
+%button{'ng-click' =>'vm.addPlayer()'} add another player
+%button{'ng-click' =>'vm.removePlayer()'} remove
 %div(single_player_graph items='vm.items')
 
