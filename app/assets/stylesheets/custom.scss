@@ -30,3 +30,47 @@
   display: inline-block;
   background-color:yellow;
 }
+
+
+.reveal-modal {
+  min-height: 300px;
+  transition: 0.2s ease-in-out all;
+  transition-delay: 0.2s;
+  opacity: 1;
+  &.ng-hide-add {
+    display: block !important;
+  }
+  &.ng-hide-remove {
+    display: block !important;
+  }
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+.ng-modal {
+  transition: 0.2s ease-in-out opacity;
+  .reveal-modal {
+    display: block;
+    visibility: visible;
+  }
+  .reveal-modal-bg {
+    display: block;
+  }
+  &.ng-hide-add {
+    display: block !important;
+  }
+  &.ng-hide-remove {
+    display: block !important;
+  }
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+.demo .button {
+  margin: 60px auto 0;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
+}
+

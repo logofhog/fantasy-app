@@ -1,10 +1,16 @@
 angular.module('fantasy_app')
-  .controller('playerCtrl', function($stateParams, apiUtils, $scope){
+  .controller('playerCtrl', function($stateParams, apiUtils){
     var vm = this;
+    vm.modalShown = false;
+
+    var show_stat;
     var players_to_graph = {};
 
     init();
-    var show_stat;
+
+    vm.toggleModal = function() {
+      vm.modalShown = !vm.modalShown;
+    }
 
     function init() {
       getPlayerData($stateParams.id).then(function(response) {
