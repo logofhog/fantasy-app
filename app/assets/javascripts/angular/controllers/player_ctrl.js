@@ -73,7 +73,8 @@ angular.module('fantasy_app')
     function arrayByWeek(obj) {
       var stats_array = Array.apply(null, Array(17)).map(function(x, i) {return {week: i+1}});
       for (var i=0; i<16; i++) {
-        stats_array[obj[i].week-1] = obj[i]
+        obj[i] = obj[i] || {week: i}
+        stats_array[obj[i].week-1] = obj[i];
       }
       return stats_array;
     }
