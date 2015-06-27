@@ -1,3 +1,7 @@
 %div(filter_options)
 this is the players page!
+%div(modal show='modalShown')
+  %div(single_player_graph items="items")
 %div(players_graph)
+%div(ng-repeat="player in vm.players")>
+  %div(single_player)

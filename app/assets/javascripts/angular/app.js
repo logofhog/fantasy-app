@@ -7,7 +7,8 @@ angular.module('fantasy_app', ['ui.router', 'templates'])
       })
       .state('players', {
         url: "/players",
-        templateUrl: "players_home.html"
+        templateUrl: "players_home.html",
+        controller: "playersCtrl"
       })
       .state('player', {
         url: "/player/:id",

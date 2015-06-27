@@ -1,31 +1,35 @@
 angular.module('fantasy_app')
-  .controller('playerCtrl', function($stateParams, apiUtils){
+  .controller('playerCtrl', function($stateParams, apiUtils, $scope){
     var vm = this;
-    vm.modalShown = false;
 
     var show_stat;
     var players_to_graph = {};
 
     init();
 
-    vm.toggleModal = function() {
-      vm.modalShown = !vm.modalShown;
-    }
-
     function init() {
-      getPlayerData($stateParams.id).then(function(response) {
-        players_to_graph[response.player.player_id] = response;
-        resetGraph()
-      });
+      if ($stateParams.id) {
+        getPlayerData($stateParams.id).then(function(response) {
+          players_to_graph[response.player.player_id] = response;
+          resetGraph()
+        });
+      }
     }
 
     vm.changeStat = function(stat) {
       show_stat = stat;
     }
 
-    vm.addPlayer = function() {
-      var player_id = "00-0029668"
-      getPlayerData(player_id).then(function(response) {
+    $scope.initPlayerModal = function(id) {
+      players_to_graph = {};
+      addPlayer(id).then(function() {
+        $scope.showPlayerModal(vm.items);
+      });
+    }
+
+
+    function addPlayer(player_id) {
+      return getPlayerData(player_id).then(function(response) {
         players_to_graph[response.player.player_id] = response;
         resetGraph();
       });

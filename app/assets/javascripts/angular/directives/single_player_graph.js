@@ -1,13 +1,14 @@
 angular.module('fantasy_app')
   .directive('singlePlayerGraph', function(){
     return {
-      template: 'this is the graph <div id="container"></div>',
+      template: '<div id="player_container"></div>',
       scope: {
         items: '='
       },
       link: function(scope, elem, attrs) {
 
         scope.$watch('items', function(newvalue) {
+          console.log(scope.items);
           if (! scope.items || Object.keys(scope.items).length == 0) { return }
           var series = seriesValues(scope.items.series);
           makeChart(series, scope.items.title, 17);
@@ -25,7 +26,7 @@ angular.module('fantasy_app')
         }
 
         function makeChart(series, title, ticks) {
-          $('#container').highcharts({
+          $('#player_container').highcharts({
             chart: {
                     type: 'spline'
             },
