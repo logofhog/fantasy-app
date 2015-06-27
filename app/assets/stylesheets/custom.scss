@@ -52,6 +52,7 @@
   .reveal-modal {
     display: block;
     visibility: visible;
+    position: fixed;
   }
   .reveal-modal-bg {
     display: block;
@@ -64,13 +65,6 @@
   }
   &.ng-hide {
     opacity: 0;
-  }
-}
-.demo .button {
-  margin: 60px auto 0;
-  outline: none;
-  &:focus {
-    outline: none;
   }
 }
 
