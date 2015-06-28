@@ -1,7 +1,42 @@
 %div(filter_options)
-this is the players page!
 %div(modal show='modalShown')
   %div(single_player_graph items="items")
 %div(players_graph)
-%div(ng-repeat="player in vm.players")>
-  %div(single_player)
+%table
+  %tbody
+    %tr
+      %th
+      %th{:colspan => 5} Passing
+      %th{:colspan => 3} Rushing
+      %th{:colspan => 4} Receiving
+    %tr
+      %th Player
+      %th Yards
+      %th TDs
+      %th Int
+      %th Att
+      %th Comp
+      %th Yards
+      %th TDs
+      %th Att
+      %th Yards
+      %th TDs
+      %th Rec
+      %th Tar
+    %tr(ng-repeat="player in vm.players")>
+      %td
+        %div(single_player)
+      %td {{player.passing_yds}}
+      %td {{player.passing_tds}}
+      %td {{player.passing_int}}
+      %td {{player.passing_attempts}}
+      %td {{player.passing_completions}}
+      %td {{player.rushing_yds}}
+      %td {{player.rushing_tds}}
+      %td {{player.rushing_att}}
+      %td {{player.receiving_yds}}
+      %td {{player.receiving_tds}}
+      %td {{player.receiving_rec}}
+      %td {{player.receiving_tar}}
+      %td {{player.total_points | number:0}}
+
