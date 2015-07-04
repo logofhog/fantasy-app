@@ -18,6 +18,14 @@ angular.module('fantasy_app', ['ui.router', 'templates'])
       })
       .state('teams', {
         url: "/teams",
+        controller: "teamsCtrl",
+        controllerAs: 'vm',
         templateUrl: "teams_home.html"
+      })
+      .state('teams.singleTeam', {
+        url: '/:id',
+        templateUrl: 'single_team.html',
+        controller: 'singleTeamCtrl',
+        controllerAs: 'team'
       })
   });

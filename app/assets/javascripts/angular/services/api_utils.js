@@ -4,7 +4,8 @@ angular.module('fantasy_app')
       getPlayers: getPlayers,
       getPlayer: getPlayer,
       getPlayerByWeek: getPlayerByWeek,
-      searchPlayers: searchPlayers
+      searchPlayers: searchPlayers,
+      getTeam: getTeam
     }
 
     function getPlayerByWeek(id){
@@ -23,6 +24,19 @@ angular.module('fantasy_app')
       return $http.get('/players')
         .success(getPlayersSuccess)
         .error(getPlayersError);
+    }
+
+    function getTeam(id) {
+      return $http.get('teams/' + id + '/players_by_week')
+        .success(getTeamSuccess)
+        .error(getTeamError)
+    }
+
+    function getTeamSuccess(data, status, headers, config) {
+      return data
+    }
+
+    function getTeamError(data, status, headers, config) {
     }
 
     function getPlayersSuccess(data, status, headers, config) {
