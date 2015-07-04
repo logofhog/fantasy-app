@@ -27,7 +27,7 @@ angular.module('fantasy_app')
     }
 
     function getTeam(id) {
-      return $http.get('teams/' + id + '/players_by_week')
+      return $http.get('teams/' + id + '/weekly_totals')
         .success(getTeamSuccess)
         .error(getTeamError)
     }

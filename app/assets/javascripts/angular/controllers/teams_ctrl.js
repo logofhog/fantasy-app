@@ -1,28 +1,11 @@
 angular.module('fantasy_app')
-  .controller('teamsCtrl', function($stateParams, $scope, apiUtils, teams){
-    init();
-
+  .controller('teamsCtrl', function($state, $rootScope, teams){
     var vm = this;
-    vm.expandedTeams = true;
+    vm.expandedTeams = (!!$state.params.id) ? false: true
     vm.teams = teams;
 
-    function init() {
-      console.log('intializing');
-      if ($stateParams.id) {
-        getTeamData($stateParams.id).then(function(response) {
-          console.log(response);
-        });
-      }
-    }
-
-    function getTeamData(id) {
-      apiUtils.getTeamData(id).then(function(response) {
-        return response
-      });
-    }
-
-    vm.toggleExpandedTeams = function(){
-      vm.expandedTeams = false;
-    }
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      vm.expandedTeams = (!!$state.params.id) ? false: true
+    });
   });
 
