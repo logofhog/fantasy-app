@@ -13,7 +13,7 @@ angular.module('fantasy_app')
 
     function getTeamData(id) {
       return apiUtils.getTeam(id).then(function(response) {
-        return response;
+        return response.data;
       });
     }
   });
