@@ -1,70 +1,66 @@
 angular.module('fantasy_app')
-  .directive('teamGraph', function(){
+  .directive('teamGraph', function(stats_names){
     return {
       scope: {
-        items: '='
+        items: '=',
+        stat:  '='
       },
       link: function(scope, elem, attrs) {
 
-        console.log('making the graph')
-
         scope.$watch('items', function(newvalue) {
-          console.log(scope.items);
+          makeGraph(scope.items);
           if (! scope.items || Object.keys(scope.items).length == 0) { return }
         }, true);
 
-        $('#team_graph_container').highcharts({
-          chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-          },
-          title: {
-            text: 'Browser market shares January, 2015 to May, 2015'
-          },
-          tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
+        function series(data) {
+          var series = []
+          data.map(function(d) {
+            var temp_obj = {};
+            if(d[scope.stat] > 0) {
+              temp_obj.name = d.full_name;
+              temp_obj.y = parseInt(d[scope.stat]);
+              series.push(temp_obj);
+            }
+          });
+          return series.sort(function(a, b) { return a.y - b.y });
+        }
+
+        function makeGraph(data) {
+          $('#team_graph_container_' + scope.stat).highcharts({
+            chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie'
+            },
+            title: {
+              text: stats_names[scope.stat]
+            },
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y} {point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
                   enabled: true,
-                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                  format: '<b>{point.name}</b>:{point.y} {point.percentage:.1f}%',
                   style: {
                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                   }
                 }
-            }
-          },
-          series: [{
-            name: "Brands",
-            colorByPoint: true,
-            data: [{
-              name: "Microsoft Internet Explorer",
-              y: 6.33
-            }, {
-              name: "Chrome",
-              y: 24.03
-            }, {
-              name: "Firefox",
-                y: 10.38
-            }, {
-                name: "Safari",
-                y: 4.77
-            }, {
-                name: "Opera",
-                y: 0.91
-            }, {
-                name: "Proprietary or Undetectable",
-                y: 0.2
+              }
+            },
+            series: [{
+              name: stats_names[scope.stat],
+              colorByPoint: true,
+              data: series(data)
             }]
-          }]
-        });
-      }
-    }
-  }
+          });
+        } //end makeGraph()
+      } //end link
+    } //end return val
+  } //end directive
 );
 

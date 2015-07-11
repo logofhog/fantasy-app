@@ -7,6 +7,8 @@ angular.module('fantasy_app')
     function init() {
       if ($stateParams.id) {
         getTeamData($stateParams.id).then(function(response) {
+          console.log(response.data);
+          team.data = response.data;
         });
       }
     }

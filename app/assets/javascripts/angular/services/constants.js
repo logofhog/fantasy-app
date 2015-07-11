@@ -162,4 +162,18 @@ angular.module('fantasy_app')
         "name": "Redskins"
       }
     ]
-);
+  )
+  .constant('stats_names',
+       {
+        passing_yds : 'Passing Yards',
+        passing_tds : 'Passing TDs',
+        rushing_yds : 'Rushing Yards',
+        rushing_tds : 'Rushing TDs',
+        rushing_att : 'Rushing Attempts',
+        receiving_yds : 'Receiving Yards',
+        receiving_tds : 'Receiving TDs',
+        receiving_rec : 'Receptions',
+        receiving_tar : 'Receiving Targets',
+        total_points: 'Total Points'
+      }
+  );

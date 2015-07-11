@@ -1,2 +1,12 @@
-%span this is the single team thing!
-%span(team_graph id='team_graph_container') 
+.row.team_stats_row
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'receiving_yds'" id='team_graph_container_receiving_yds')
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'rushing_yds'" id='team_graph_container_rushing_yds')
+.row.team_stats_row
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'receiving_tds'" id='team_graph_container_receiving_tds')
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'rushing_tds'" id='team_graph_container_rushing_tds')
+.row.team_stats_row
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'receiving_rec'" id='team_graph_container_receiving_rec')
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'rushing_att'" id='team_graph_container_rushing_att')
+.row.team_stats_row
+  .large-6.columns.team_graph(team_graph items='team.data' stat="'receiving_tar'" id='team_graph_container_receiving_tar')
+
