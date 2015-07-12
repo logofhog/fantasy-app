@@ -2,24 +2,29 @@ angular.module('fantasy_app')
   .directive('stackedBarChart', function(playerStatUtils){
     return {
       scope: {
-        items: '='
+        options: '='
         },
       template: "<div id='container'></div>",
       link: function(scope, elem, attrs) {
+        scope.$watch('options', function(newvalue) {
+          makeChart();
+        });
+
         function makeChart() {
-          if (! scope.items) {
+          if (! scope.options) {
             return
           }
+
+          var options = scope.options;
+
           var chart = new Highcharts.Chart({
             chart: {
               renderTo: 'container',
               type: 'bar',
               height: '700'
             },
-            title: {text: 'Players Points'},
-            xAxis: {
-              categories: playerStatUtils.getPlayers(scope.items)
-            },
+            title: {text: options.title_text},
+            xAxis: { categories: options.categories},
             legend: {
               reversed: true
             },
@@ -30,30 +35,13 @@ angular.module('fantasy_app')
                 groupPadding: 0.1
               }
             },
-            series: [
-              { name: 'Passing',
-                data: playerStatUtils.getPassing(scope.items)
-              },
-              { name: 'Rushing',
-                data: playerStatUtils.getRushing(scope.items)
-              },
-              { name: 'Receiving',
-                data: playerStatUtils.getReceiving(scope.items)
-              }
-            ],
-            tooltip: {
-              shared: true,
-              useHTML: true,
-              formatter: function()  {
-                var statsDict = playerStatUtils.statsDict(scope.items);
-                var player = statsDict[this.x];
-                template = makeTemplate(player);
-                return template
-              }
-            }
+            series: options.series,
+            tooltip: options.tooltip
           }); //end HighChart.Chart
         }//end makeChart
-
+      }
+    }
+  });
             //  keeping this for advanced stat functionality
 //            series: [
 //              {name: 'Passing Yards',
@@ -90,23 +78,3 @@ angular.module('fantasy_app')
 
         // Apply the theme
 //        Highcharts.setOptions(Highcharts.theme);
-
-        var stat_names = playerStatUtils.stat_names
-
-        function makeTemplate(player) {
-          var stats = playerStatUtils.removeUselessKeys(player);
-          var template = ["<span id='tooltip_name'>", player.full_name, "</span><table id='player_tooltip_table'>"]
-          for (var k in stats) {
-            template = template.concat(["<tr","class='" + stats[k].stat_name + "'", "><td>", stat_names[stats[k].stat_name],
-                                        "</td><td style='text-align: right'>", stats[k].stat_value, "</td></tr>"]);
-          }
-          template = template.join(' ');
-          return template
-        }
-
-        scope.$watch('items', function(newvalue) {
-          makeChart();
-        });
-      }
-    }
-  })
