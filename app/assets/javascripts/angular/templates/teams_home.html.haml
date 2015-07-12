@@ -1,4 +1,3 @@
-%span this is the teams home page!
 %div(ng-show = "vm.expandedTeams")
   %div(ng-repeat='team in vm.teams')
     %a{'ui-sref' => 'teams.singleTeam({id: team.team_id})'} {{team.city}} {{team.name}}

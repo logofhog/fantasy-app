@@ -1,6 +1,5 @@
 angular.module('fantasy_app')
   .service('playerStatUtils', function(){
-
     var utils = {
       stat_names:  {
         passing_yds : 'Passing Yards',
@@ -20,8 +19,6 @@ angular.module('fantasy_app')
         return stats
       },
       statsDict: function(items){
-        //if (typeof(scope.dict) != 'undefined') { return scope.dict }
-
         stats = {};
         for (i in items) {
           stats[items[i].full_name] = items[i];
@@ -59,6 +56,5 @@ angular.module('fantasy_app')
         return data
       }
     }
-
     return utils
   });

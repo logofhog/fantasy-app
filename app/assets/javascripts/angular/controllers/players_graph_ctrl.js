@@ -10,7 +10,6 @@ angular.module('fantasy_app')
     function makeOptions(players) {
       var options = {
         title_text: "Players Points",
-        series: [],
         categories: playerStatUtils.getPlayers(players),
         tooltip: {
           shared: true,
