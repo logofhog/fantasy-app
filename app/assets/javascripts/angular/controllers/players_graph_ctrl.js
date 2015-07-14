@@ -1,11 +1,19 @@
 angular.module('fantasy_app')
-  .controller('playersGraphCtrl', function(apiUtils, playerStatUtils){
+  .controller('playersGraphCtrl', function(apiUtils, playerStatUtils, $scope){
     var vm = this;
 
-    apiUtils.getPlayers().then(function(response) {
-      vm.players = response.data.players;
-      vm.options = makeOptions(response.data.players);
-    });
+    $scope.$on('filter_options_update', function(event, args) {
+      refreshData(args.url);
+    })
+
+    refreshData('');
+
+    function refreshData(url) {
+      apiUtils.getPlayers(url).then(function(response) {
+        vm.players = response.data.players;
+        vm.options = makeOptions(response.data.players);
+      });
+    }
 
     function makeOptions(players) {
       var options = {

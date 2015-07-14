@@ -1,12 +1,14 @@
+.button(ng-click="update()")
 %div
-  %a.button.radius{:href => '#'} Red Zone
-  %a.button.radius{:href => '#'} WR
-  %a.button.radius.disabled{:href => '#'} QB
-  %a.button.radius.secondary{:href => '#'} TE
-  %a.button.radius{:href => '#'} RB
-  %a.button.radius.float--right{:href => '#'} Sum/Avg
+  .button(ng-click='toggleRedZone()') Red Zone
+  .button(ng-click='toggleSumAvg()') Sum/Avg
+  .button(ng-click='togglePosition("WR")') WR
+  .button(ng-click='togglePosition("QB")') QB
+  .button(ng-click='togglePosition("TE")') TE
+  .button(ng-click='togglePosition("RB")') RB
 %span(ng-repeat='value in weeks | byKey')
   #checkbox_container
     %span {{value}}
     %input(type='checkbox' ng-model='weeks[value]')
 #weeks_slider
+

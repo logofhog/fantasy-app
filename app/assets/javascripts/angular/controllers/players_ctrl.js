@@ -6,8 +6,6 @@ angular.module('fantasy_app')
 
     $scope.showPlayerModal = function(items) {
       $scope.items = items;
-      console.log('items', items);
-      console.log('modal show');
       $scope.modalShown = !$scope.modalShown;
     }
 

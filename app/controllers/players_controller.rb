@@ -31,8 +31,8 @@ class PlayersController < ApplicationController
     {
     :is_red_zone => params[:is_red_zone] || false,
     :omit_weeks  => params[:omit_weeks],
-    :position    => params[:position],
-    :is_sum      => params[:is_sum] || true,
+    :positions    => params[:positions],
+    :is_avg      => params[:is_avg] || false,
     :sort_by     => params[:sort_by]
     }
   end

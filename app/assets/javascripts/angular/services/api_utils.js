@@ -20,8 +20,8 @@ angular.module('fantasy_app')
         .error(getPlayersError);
     }
 
-    function getPlayers(){
-      return $http.get('/players')
+    function getPlayers(url){
+      return $http.get('/players' + url)
         .success(getPlayersSuccess)
         .error(getPlayersError);
     }

@@ -2,6 +2,7 @@ angular.module('fantasy_app')
   .directive('filterOptions', function(){
     return {
       templateUrl: 'filter_options.html',
+      controller: 'filterOptionsCtrl',
       link: function(scope, elem, attrs){
 
         scope.weeks = {
@@ -36,10 +37,8 @@ angular.module('fantasy_app')
 
         function changeValue(start, end) {
           value = start > weeks_endpoints['start'] ? false : true
-          console.log('changing values');
           var min = Math.min(start, weeks_endpoints['start']);
           var max = Math.max(start, weeks_endpoints['start']);
-          console.log(min, max);
           for (min; min < max; min++) {
             scope.weeks[min] = value;
           }
@@ -47,7 +46,6 @@ angular.module('fantasy_app')
           value = end > weeks_endpoints['end'] ? true : false
           var min = Math.min(end, weeks_endpoints['end']) + 1;
           var max = Math.max(end, weeks_endpoints['end']);
-          console.log(min, max);
           for (min; min <= max; min++) {
             scope.weeks[min] = value;
           }
@@ -60,7 +58,6 @@ angular.module('fantasy_app')
             if (i==17) { range['max'] = 17 }
             if (i!=1 && i!=17) {range[String((100/16)*(i-1))] = i}
           }
-          console.log(range);
           return range
         }
       }

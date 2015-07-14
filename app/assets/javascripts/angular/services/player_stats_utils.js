@@ -14,7 +14,7 @@ angular.module('fantasy_app')
       removeUselessKeys:   function(player) {
         var stats = $.map(player, function(value, index) {
           if (value === '0' || !(index in utils.stat_names)) { return }
-          return {stat_name: index, stat_value: parseInt(value)}
+          return {stat_name: index, stat_value: parseFloat(value)}
         });
         return stats
       },
@@ -31,27 +31,27 @@ angular.module('fantasy_app')
       },
       getPassing: function(items){
         var data = items.map(function(player) {
-          var total = (parseInt(player.passing_yds) /25) +
-                      (parseInt(player.passing_tds) * 4) +
-                      (parseInt(player.passing_int) * -1)
-          return Math.round(total)
+          var total = (parseFloat(player.passing_yds) /25.0) +
+                      (parseFloat(player.passing_tds) * 4) +
+                      (parseFloat(player.passing_int) * -1)
+          return total
         });
         return data
       },
       getRushing: function(items){
         var data = items.map(function(player) {
-          var total = (parseInt(player.rushing_yds) /10) +
-                      (parseInt(player.rushing_tds) * 6)
-          return Math.round(total)
+          var total = (parseFloat(player.rushing_yds) /10.0) +
+                      (parseFloat(player.rushing_tds) * 6)
+          return total
         });
         return data
       },
       getReceiving: function(items){
         var data = items.map(function(player) {
-          var total = (parseInt(player.receiving_yds) / 10) +
-                      (parseInt(player.receiving_tds) * 6) +
-                      (parseInt(player.receiving_rec) / 2)
-          return Math.round(total)
+          var total = (parseFloat(player.receiving_yds) / 10.0) +
+                      (parseFloat(player.receiving_tds) * 6) +
+                      (parseFloat(player.receiving_rec) / 2.0)
+          return total
         });
         return data
       }
