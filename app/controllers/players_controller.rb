@@ -31,7 +31,7 @@ class PlayersController < ApplicationController
     {
     :is_red_zone => params[:is_red_zone] || false,
     :omit_weeks  => params[:omit_weeks],
-    :positions    => params[:positions],
+    :positions    => params[:positions] || "QB,RB,WR,TE",
     :is_avg      => params[:is_avg] || false,
     :sort_by     => params[:sort_by]
     }
