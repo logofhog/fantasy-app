@@ -31,7 +31,8 @@ class Player < ActiveRecord::Base
       red_zone = options[:is_red_zone] ? 'rz_' : ''
       stat = options[:is_avg] ? 'avg' : 'sum'
       season_year = 2014
-      positions = options[:positions] || ['QB', 'RB', 'WR', 'TE']
+      positions = options[:positions].split(',') || ['QB', 'RB', 'WR', 'TE']
+      positions = positions.map{ |p| "'" + p + "'" }.join(',')
       sort_by = options[:sort_by] || 'total_points'
       omit_weeks = options[:omit_weeks] || false
 
@@ -44,7 +45,7 @@ class Player < ActiveRecord::Base
       SELECT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats
       GROUP BY #{red_zone}game_stats.player_id HAVING count(#{red_zone}game_stats.player_id)> 10)
       AND season_type= 'Regular' #{weeks(omit_weeks)}
-      #{show_positions} AND season_year = #{season_year}
+      #{show_positions(positions)} AND season_year = #{season_year}
       GROUP BY players.player_id, players.full_name, players.position
       ORDER BY #{sort_by} DESC limit(25) offset(?);
       "
@@ -54,6 +55,22 @@ class Player < ActiveRecord::Base
 
     def records_array(query, page=0)
       ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
+    end
+
+    def replacement_player position
+      query = "
+      SELECT players.player_id, players.full_name, players.position,
+      #{total_points(stat)}
+      FROM players
+      INNER JOIN game_stats on players.player_id = game_stats.player_id
+      WHERE players.player_id IN (
+      SELECT game_stats.player_id FROM game_stats
+      GROUP BY game_stats.player_id HAVING count(game_stats.player_id)> 10)
+      AND season_type= 'Regular' #{weeks(omit_weeks)}
+      AND players.positions = #{position} AND season_year = #{season_year}
+      GROUP BY players.player_id, players.full_name, players.position
+      ORDER BY #{sort_by} DESC limit(25) offset(?);
+      "
     end
 
     def total_points stat
@@ -91,13 +108,12 @@ class Player < ActiveRecord::Base
       "round(#{stat}(#{property})::numeric, 2)"
     end
 
-
     def weeks(weeks = false)
       "and week not in (#{weeks})" if weeks
     end
 
     def show_positions(positions = false)
-      "and players.positions in #{positions}" if positions
+      "and position in (#{positions})" if positions
     end
   end
 end
