@@ -41,7 +41,9 @@ class Player < ActiveRecord::Base
       FROM players
       INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
       WHERE players.player_id IN (
-      SELECT DISTINCT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats) AND season_type= 'Regular' #{weeks(omit_weeks)}
+      SELECT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats
+      GROUP BY #{red_zone}game_stats.player_id HAVING count(#{red_zone}game_stats.player_id)> 10)
+      AND season_type= 'Regular' #{weeks(omit_weeks)}
       #{show_positions} AND season_year = #{season_year}
       GROUP BY players.player_id, players.full_name, players.position
       ORDER BY #{sort_by} DESC limit(25) offset(?);
