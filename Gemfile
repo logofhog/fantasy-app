@@ -28,6 +28,7 @@ group :doc do
 end
 
 group :development, :test do
+  gem 'pry'
   gem 'jasmine'
   gem 'rspec-rails'
   gem 'sqlite3'
