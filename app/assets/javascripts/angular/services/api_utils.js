@@ -5,7 +5,8 @@ angular.module('fantasy_app')
       getPlayer: getPlayer,
       getPlayerByWeek: getPlayerByWeek,
       searchPlayers: searchPlayers,
-      getTeam: getTeam
+      getTeam: getTeam,
+      getAllReplacementPlayers: getAllReplacementPlayers
     }
 
     function getPlayerByWeek(id){
@@ -47,5 +48,17 @@ angular.module('fantasy_app')
     }
 
     function searchPlayers(){
+    }
+
+    function getAllReplacementPlayers(){
+      return $http.get('replacement_players/')
+        .success(replacementPlayersSuccess)
+        .error(replacementPlayersError)
+    }
+
+    function replacementPlayersError(){}
+
+    function replacementPlayersSuccess(data, status, headers, config){
+      return data
     }
   });

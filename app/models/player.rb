@@ -37,7 +37,7 @@ class Player < ActiveRecord::Base
       omit_weeks = options[:omit_weeks] || false
 
       query = "
-      SELECT players.player_id, players.full_name, players.position,
+      SELECT players.player_id, players.full_name, players.position, count(*) as games_played,
       #{stats_query(stat)}, #{total_points(stat)}
       FROM players
       INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
@@ -57,23 +57,31 @@ class Player < ActiveRecord::Base
       ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
     end
 
-    def replacement_player position
+    def replacement_player position, season_year = 2014, offset = 20
       query = "
+      SELECT avg(p.total_points) from (
       SELECT players.player_id, players.full_name, players.position,
-      #{total_points(stat)}
+      #{total_points('avg')}
       FROM players
       INNER JOIN game_stats on players.player_id = game_stats.player_id
       WHERE players.player_id IN (
       SELECT game_stats.player_id FROM game_stats
       GROUP BY game_stats.player_id HAVING count(game_stats.player_id)> 10)
-      AND season_type= 'Regular' #{weeks(omit_weeks)}
-      AND players.positions = #{position} AND season_year = #{season_year}
+      AND season_type= 'Regular'
+      AND position = '#{position}' AND season_year = #{season_year}
       GROUP BY players.player_id, players.full_name, players.position
-      ORDER BY #{sort_by} DESC limit(25) offset(?);
+      ORDER BY total_points DESC LIMIT 5 OFFSET #{offset}
+      ) AS p
       "
+      result = records_array(query)
+      round(result)
     end
 
-    def total_points stat
+    def round result
+      result[0]["avg"].to_f.round(2)
+    end
+
+    def total_points stat = ''
       "round((
       #{stat}(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
       #{stat}(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
