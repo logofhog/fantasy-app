@@ -50,8 +50,8 @@ angular.module('fantasy_app')
     function searchPlayers(){
     }
 
-    function getAllReplacementPlayers(){
-      return $http.get('replacement_players/')
+    function getAllReplacementPlayers(query_string){
+      return $http.get('replacement_players/?' + query_string)
         .success(replacementPlayersSuccess)
         .error(replacementPlayersError)
     }

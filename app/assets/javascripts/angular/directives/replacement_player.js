@@ -7,27 +7,40 @@ angular.module('fantasy_app')
       controller: function(apiUtils, replacementPlayerUtils){
         var activePosition;
         var vm = this;
+
+        vm.replacement_player = {
+          qb: {
+            csize: 4,
+            offset: 20
+          },
+          rb: {
+            csize: 5,
+            offset: 20
+          },
+          wr: {
+            csize: 5,
+            offset: 30
+          },
+          te: {
+            csize: 5,
+            offset: 15
+          }
+        }
         vm.getReplacementPlayers = getReplacementPlayers;
 
-        function getReplacementPlayers() {
-          console.log('replacement players');
-          apiUtils.getAllReplacementPlayers().then(function(response) {
+        getReplacementPlayers();
+
+        function getReplacementPlayers(params) {
+          var query_string = makeUrl();
+          apiUtils.getAllReplacementPlayers(query_string).then(function(response) {
             replacementPlayerUtils.set_replacement_players(response.data);
           });
         }
 
-        getReplacementPlayers();
-
-        vm.setPosition = function(position){
-          console.log('setting position to', position);
-          console.log(replacementPlayerUtils.QB, 'should be the qb');
-          activePosition = position
+        function makeUrl() {
+          return $.param(vm.replacement_player);
         }
 
-        vm.updateReplacementPlayer = function(position) {
-          console.log('updating replacement player');
-          //replacementPlayerUtils.update(position);
-        }
       }
     }
   });

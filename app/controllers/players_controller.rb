@@ -13,10 +13,10 @@ class PlayersController < ApplicationController
 
   def replacement_players
     render json: {
-      QB: Player.replacement_player('QB', 2014, 20),
-      RB: Player.replacement_player('RB', 2014, 25),
-      WR: Player.replacement_player('WR', 2014, 40),
-      TE: Player.replacement_player('TE', 2014, 12)
+      QB: Player.replacement_player('QB', 2014, params[:qb][:offset]),
+      RB: Player.replacement_player('RB', 2014, params[:rb][:offset]),
+      WR: Player.replacement_player('WR', 2014, params[:wr][:offset]),
+      TE: Player.replacement_player('TE', 2014, params[:te][:offset])
     }
   end
 
