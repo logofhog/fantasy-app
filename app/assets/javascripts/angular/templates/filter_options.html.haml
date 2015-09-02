@@ -1,12 +1,12 @@
 %div(replacement_player)
-.button(ng-click="update()")
+.btn.btn-default(ng-click="update()")Update
 %div
-  .button(ng-click='toggleRedZone()') Red Zone
-  .button(ng-click='toggleSumAvg()') Sum/Avg
-  .button(ng-click='togglePosition("WR")') WR
-  .button(ng-click='togglePosition("QB")') QB
-  .button(ng-click='togglePosition("TE")') TE
-  .button(ng-click='togglePosition("RB")') RB
+  .btn.btn-default(ng-click='toggleRedZone()') Red Zone
+  .btn.btn-default(ng-click='toggleSumAvg()') Sum/Avg
+  .btn.btn-default(ng-click='togglePosition("WR")') WR
+  .btn.btn-default(ng-click='togglePosition("QB")') QB
+  .btn.btn-default(ng-click='togglePosition("TE")') TE
+  .btn.btn-default(ng-click='togglePosition("RB")') RB
 %span(ng-repeat='value in weeks | byKey')
   #checkbox_container
     %span {{value}}

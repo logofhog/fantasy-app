@@ -1,0 +1,10 @@
+%div(player_search)
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('passing_yds')"} Passing Yards
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('passing_tds')"} Passing TDs
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('rushing_yds')"} Rushing Yards
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('rushing_tds')"} Rushing TDs
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('receiving_yds')"} Receiving Yards
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('receiving_tds')"} Receiving TDs
+.btn.btn-default.btn-xs{'ng-click' => "change_stat('receiving_rec')"} Receptions
+#player_container
+%div(single_player_graph items="items")

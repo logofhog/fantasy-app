@@ -6,5 +6,7 @@
 //= require highcharts-release
 //= require highcharts-release/modules/exporting
 //= require nouislider/distribute/jquery.nouislider.all.js
+//= require bootstrap-sprockets
+//= require angular-bootstrap
 //= require_tree ./angular
 //= require_tree .

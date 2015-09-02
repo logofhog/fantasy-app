@@ -6,7 +6,15 @@ angular.module('fantasy_app')
       getPlayerByWeek: getPlayerByWeek,
       searchPlayers: searchPlayers,
       getTeam: getTeam,
-      getAllReplacementPlayers: getAllReplacementPlayers
+      getAllReplacementPlayers: getAllReplacementPlayers,
+      getPlayerSuggestions: getPlayerSuggestions
+    }
+
+    function getPlayerSuggestions(value) {
+      return $http.get('players/search?name=' + value)
+        .success(function(data, status, headers, config) {
+          return data;
+        });
     }
 
     function getPlayerByWeek(id){

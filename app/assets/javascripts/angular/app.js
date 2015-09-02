@@ -1,14 +1,15 @@
-angular.module('fantasy_app', ['ui.router', 'templates'])
+angular.module('fantasy_app', ['ui.router', 'templates', 'ui.bootstrap', 'ui.bootstrap.modal'])
   .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
       .state('search', {
         url: "/search",
-        templateUrl: "search.html"
+        templateUrl: "search.html",
+        controller: "playerCtrl"
       })
       .state('players', {
         url: "/players",
         templateUrl: "players_home.html",
-        controller: "playersCtrl"
+        controller: "playerCtrl"
       })
       .state('player', {
         url: "/player/:id",

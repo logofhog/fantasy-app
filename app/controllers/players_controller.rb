@@ -3,6 +3,11 @@ class PlayersController < ApplicationController
     render json: {:players => Player.all_players(options)}
   end
 
+  def search
+    players = Player.search_by_partial(params[:name])
+    render json: players
+  end
+
   def show
     render json: player
   end

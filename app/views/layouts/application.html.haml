@@ -8,9 +8,9 @@
     = csrf_meta_tags
     = yield(:head)
   %body{"ng-app"  => 'fantasy_app'}
-    %div(nav_bar)
   #main{:role => "main"}
     .container
+      %div(nav_bar)
       .content
         .row
           .span12

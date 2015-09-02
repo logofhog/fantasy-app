@@ -11,9 +11,10 @@
     "tests"
   ],
   "dependencies": {
-    "lodash": "~2.4.1",
-    "angular": "~1.2.22",
+    "angular": "~1.4.1",
+    "angular-bootstrap": "~0.13.3",
     "angular-ui-router": "~0.2.10",
+    "lodash": "~2.4.1",
     "nouislider": "~7.0.10"
   }
 }

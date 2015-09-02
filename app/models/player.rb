@@ -53,6 +53,11 @@ class Player < ActiveRecord::Base
       records_array(query, page)
     end
 
+    def search_by_partial partial
+      query = "SELECT players.full_name, players.player_id FROM players WHERE players.full_name ILIKE ?"
+      records_array(query, "%#{partial}%")
+    end
+
     def records_array(query, page=0)
       ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
     end
