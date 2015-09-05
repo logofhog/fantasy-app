@@ -23,11 +23,13 @@ angular.module('fantasy_app')
         function makeChart(series, title, ticks) {
           var width = $(window).width() * .6;
           var height = $(window).height() * .5;
+          var reversed = (title == "Weekly Rank");
+          var minYAxis = (title == "Weekly Rank") ? 1 : null;
+          console.log(minYAxis);
           $('#player_container').highcharts({
             chart: {
                     type: 'spline',
-                    width: width,
-                    reflow: true
+                    width: width
             },
             title: {text: title},
             legend: {
@@ -40,7 +42,9 @@ angular.module('fantasy_app')
               title: {text: 'Weeks'}
             },
             yAxis: {
-              title: {text: title}
+              min: minYAxis,
+              title: {text: title},
+              reversed: reversed
             },
             plotOptions: {
               spline: {

@@ -30,3 +30,4 @@ angular.module('fantasy_app', ['ui.router', 'templates', 'ui.bootstrap', 'ui.boo
         controllerAs: 'team'
       })
   });
+

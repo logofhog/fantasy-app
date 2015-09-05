@@ -17,6 +17,17 @@ class Player < ActiveRecord::Base
 
   def week_stats
     stats = self.game_stats
+    query = "
+      select * from (
+      select game_stats.*,
+      rank() over
+      (partition by game_stats.week order by #{Player.total_points} DESC) as ranked
+      from players, game_stats where game_stats.player_id = players.player_id and
+      players.position = (select position from players where player_id = '#{player_id}')
+      ) as t1
+      where t1.player_id = '#{player_id}'
+    "
+    res = Player.records_array(query)
   end
 
   def season_total
@@ -38,7 +49,7 @@ class Player < ActiveRecord::Base
 
       query = "
       SELECT players.player_id, players.full_name, players.position, count(*) as games_played,
-      #{stats_query(stat)}, #{total_points(stat)}
+      #{stats_query(stat)}, #{total_points(stat)} as total_points
       FROM players
       INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
       WHERE players.player_id IN (
@@ -66,7 +77,7 @@ class Player < ActiveRecord::Base
       query = "
       SELECT avg(p.total_points) from (
       SELECT players.player_id, players.full_name, players.position,
-      #{total_points('avg')}
+      #{total_points('avg')} as total_points
       FROM players
       INNER JOIN game_stats on players.player_id = game_stats.player_id
       WHERE players.player_id IN (
@@ -96,7 +107,7 @@ class Player < ActiveRecord::Base
       #{stat}(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
       #{stat}(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
       #{stat}(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
-      )::numeric, 2) as total_points"
+      )::numeric, 2)"
     end
 
     def stats_query stat
@@ -117,6 +128,7 @@ class Player < ActiveRecord::Base
     end
 
     def rounder stat, property
+      return property if !stat
       return "#{stat}(#{property})" if stat == 'sum'
       "round(#{stat}(#{property})::numeric, 2)"
     end

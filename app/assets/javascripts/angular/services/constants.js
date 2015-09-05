@@ -174,6 +174,7 @@ angular.module('fantasy_app')
         receiving_tds : 'Receiving TDs',
         receiving_rec : 'Receptions',
         receiving_tar : 'Receiving Targets',
-        total_points: 'Total Points'
+        total_points: 'Total Points',
+        ranked: 'Weekly rank among same position'
       }
   );

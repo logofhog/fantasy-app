@@ -4,6 +4,12 @@ body { padding-top: 70px; }
   border-right: 1px solid;
 }
 
+.table-fixed {
+  position: fixed;
+  top: 100px;
+  display:none;
+}
+
 .replacement_input {
   width: 40px;
   display: inline-block;

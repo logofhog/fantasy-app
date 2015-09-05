@@ -1,5 +1,5 @@
 angular.module('fantasy_app')
-  .controller('playerCtrl', function($stateParams, apiUtils, $scope, $modal, $window){
+  .controller('playerCtrl', function($stateParams, apiUtils, stats_names, $scope, $modal, $window){
     var vm = this;
 
     var show_stat;
@@ -31,6 +31,22 @@ angular.module('fantasy_app')
 //      $scope.modalShown = !$scope.modalShown;
 //    }
 //
+    setTimeout(function() {
+      var tableOffset = $(".table-striped").offset().top;
+      var $header = $(".table-striped > thead").clone();
+      var $fixedHeader = $(".table-fixed").append($header);
+
+      $(window).bind("scroll", function() {
+        var offset = $(this).scrollTop();
+        if (offset >= 950 && $fixedHeader.is(":hidden")) {
+          $fixedHeader.show();
+        }
+        else if (offset < 950) {
+          $fixedHeader.hide();
+        }
+      });
+    }, 2000);
+
     init();
 
     function init() {
@@ -101,7 +117,8 @@ angular.module('fantasy_app')
       rushing_tds: "Rushing TDs",
       receiving_yds: "Receiving Yards",
       receiving_tds: "Receiving TDs",
-      receiving_rec: "Receptions"
+      receiving_rec: "Receptions",
+      ranked: "Weekly Rank"
     }
 
     function graphData(response, stat) {
@@ -133,8 +150,20 @@ angular.module('fantasy_app')
       return stats_array;
     }
 
+    function typeResults(stats) {
+      stats.map(function(stat){
+        angular.forEach(stat, function(val, key) {
+          if (key in stats_names) {
+            stat[key] = parseInt(val);
+          }
+        });
+      });
+    }
+
     function getPlayerData(id) {
       return apiUtils.getPlayerByWeek(id).then(function(response){
+        typeResults(response.data.stats);
+        console.log(response.data);
         return response.data
       });
     }
