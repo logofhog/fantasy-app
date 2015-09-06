@@ -31,22 +31,6 @@ angular.module('fantasy_app')
 //      $scope.modalShown = !$scope.modalShown;
 //    }
 //
-    setTimeout(function() {
-      var tableOffset = $(".table-striped").offset().top;
-      var $header = $(".table-striped > thead").clone();
-      var $fixedHeader = $(".table-fixed").append($header);
-
-      $(window).bind("scroll", function() {
-        var offset = $(this).scrollTop();
-        if (offset >= 950 && $fixedHeader.is(":hidden")) {
-          $fixedHeader.show();
-        }
-        else if (offset < 950) {
-          $fixedHeader.hide();
-        }
-      });
-    }, 2000);
-
     init();
 
     function init() {
@@ -80,7 +64,7 @@ angular.module('fantasy_app')
       QB: 'passing_yds',
       RB: 'rushing_yds',
       WR: 'receiving_yds',
-      TE: 'receiving'
+      TE: 'receiving_yds'
     }
 
     function statFromPlayer(position) {
@@ -163,7 +147,6 @@ angular.module('fantasy_app')
     function getPlayerData(id) {
       return apiUtils.getPlayerByWeek(id).then(function(response){
         typeResults(response.data.stats);
-        console.log(response.data);
         return response.data
       });
     }

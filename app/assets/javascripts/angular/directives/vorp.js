@@ -2,7 +2,7 @@ angular.module('fantasy_app')
   .directive('vorp', function(replacementPlayerUtils){
     return {
       scope: { player: '='},
-      template: '<span> {{games_played}}{{player.position}}</span>',
+      template: '<span>{{vorp}}</span>',
       link: function(scope, elem, attrs) {
         scope.replacement_player_values = {}
         scope.games_played = scope.player.games_played;
@@ -19,9 +19,9 @@ angular.module('fantasy_app')
 
         function setVorp() {
           var temp = (parseFloat(scope.player.total_points)/parseInt(scope.player.games_played)) - parseFloat(scope.replacement_player_values[scope.player.position])
-          //console.log(temp.toFixed(2), 'pts above replacement for ', scope.player.full_name)
           var avg = parseFloat(scope.player.total_points) / parseInt(scope.player.games_played);
           var vorp = avg / scope.replacement_player_values[scope.player.position];
+          scope.vorp = temp.toFixed(2);
         }
       }
     }

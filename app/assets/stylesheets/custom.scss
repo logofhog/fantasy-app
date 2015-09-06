@@ -4,12 +4,6 @@ body { padding-top: 70px; }
   border-right: 1px solid;
 }
 
-.table-fixed {
-  position: fixed;
-  top: 100px;
-  display:none;
-}
-
 .replacement_input {
   width: 40px;
   display: inline-block;
@@ -35,13 +29,13 @@ body { padding-top: 70px; }
     font-weight: bold;
   }
   .passing_yds, .passing_tds {
-    background-color: #7CB5EC;
+    background-color: #2b908f;
   }
   .receiving_yds, .receiving_tds, .receiving_rec {
-    background-color: #90ED7D;
+    background-color: #f45b5b;
   }
   .rushing_yds, .rushing_tds {
-    background-color: #434348;
+    background-color: #90ee7e;
   }
 }
 

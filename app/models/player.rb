@@ -47,20 +47,115 @@ class Player < ActiveRecord::Base
       sort_by = options[:sort_by] || 'total_points'
       omit_weeks = options[:omit_weeks] || false
 
-      query = "
-      SELECT players.player_id, players.full_name, players.position, count(*) as games_played,
-      #{stats_query(stat)}, #{total_points(stat)} as total_points
-      FROM players
-      INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
-      WHERE players.player_id IN (
-      SELECT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats
-      GROUP BY #{red_zone}game_stats.player_id HAVING count(#{red_zone}game_stats.player_id)> 10)
-      AND season_type= 'Regular' #{weeks(omit_weeks)}
-      #{show_positions(positions)} AND season_year = #{season_year}
-      GROUP BY players.player_id, players.full_name, players.position
-      ORDER BY #{sort_by} DESC limit(25) offset(?);
-      "
+#      query = "
+#      SELECT players.player_id, players.full_name, players.position, count(*) as games_played,
+#      #{stats_query(stat)}, #{total_points(stat)} as total_points
+#      FROM players
+#      INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
+#      WHERE players.player_id IN (
+#      SELECT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats
+#      GROUP BY #{red_zone}game_stats.player_id HAVING count(#{red_zone}game_stats.player_id)> 10)
+#      AND season_type= 'Regular' #{weeks(omit_weeks)}
+#      #{show_positions(positions)} AND season_year = #{season_year}
+#      GROUP BY players.player_id, players.full_name, players.position
+#      ORDER BY #{sort_by} DESC limit(25) offset(?);
+#      "
+#
+#      records_array(query, page)
+#    end
 
+      query = """
+    select
+        round(stddev(ranking)::numeric, 2) as std_dev,
+        round(avg(ranking)::numeric, 3) as avg_rank,
+        player_id,
+        full_name,
+        sum(top_one) as top_one,
+        sum(top_five) as top_five,
+        sum(top_ten) as top_ten,
+        sum(top_fifteen) as top_fifteen,
+        sum(top_twentyfive) as top_twentyfive,
+        position,
+        sum(passing_yds) as passing_yds,
+        sum(passing_tds) as passing_tds,
+        sum(passing_attempts) as passing_attempts,
+        sum(passing_completions) as passing_completions,
+        sum(passing_int) as passing_int,
+        sum(rushing_yds) as rushing_yds,
+        sum(rushing_tds) as rushing_tds,
+        sum(rushing_att) as rushing_att,
+        sum(receiving_yds) as receiving_yds,
+        sum(receiving_rec) as receiving_rec,
+        sum(receiving_tds) as receiving_tds,
+        sum(receiving_tar) as receiving_tar,
+        round((
+        sum(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
+        sum(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
+        sum(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
+        sum(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
+        sum(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
+        sum(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
+        sum(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
+        sum(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+        )::numeric, 2) as total_points,
+        count(*) as games_played
+    from (
+    select
+    players.full_name as full_name,
+    players.position as position,
+    players.player_id as player_id,
+    t1.ranked as ranking,
+    case
+      when t1.ranked < 2 then 1
+    end as top_one,
+    case
+      when t1.ranked < 6 then 1
+    end as top_five,
+    case
+      when t1.ranked < 11 then 1
+    end as top_ten,
+    case
+      when t1.ranked < 11 then 1
+    end as top_fifteen,
+    case
+      when t1.ranked < 26 then 1
+    end as top_twentyfive,
+    t1.week,
+    t1.passing_yds as passing_yds,
+    t1.passing_tds as passing_tds,
+    t1.passing_int as passing_int,
+    t1.passing_attempts as passing_attempts,
+    t1.passing_completions as passing_completions,
+    t1.rushing_yds as rushing_yds,
+    t1.rushing_tds as rushing_tds,
+    t1.rushing_att as rushing_att,
+    t1.receiving_yds as receiving_yds,
+    t1.receiving_rec as receiving_rec,
+    t1.receiving_tds as receiving_tds,
+    t1.receiving_tar as receiving_tar
+    from (
+      select players.full_name, players.position, game_stats.*,
+      rank() over
+        (partition by game_stats.week, players.position order by round((
+      (passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
+      (passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
+      (passing_int*#{POINT_MULTIPLES[:passing_int]}) +
+      (rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
+      (rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
+      (receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
+      (receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
+      (receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+        )::numeric, 2) desc)
+      as ranked
+      from players, game_stats where game_stats.player_id = players.player_id
+      #{weeks(omit_weeks)} #{show_positions(positions)}
+      and players.player_id in (select game_stats.player_id from game_stats
+      group by game_stats.player_id having count(game_stats.player_id)>10)
+      ) as t1, players
+      where t1.player_id = players.player_id
+      ) as with_ranking
+      group by position, full_name, player_id order by total_points desc limit 25 offset 25
+      """
       records_array(query, page)
     end
 
