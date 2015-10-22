@@ -5,7 +5,7 @@ angular.module('fantasy_app')
     vm.teams = teams;
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      vm.expandedTeams = (!!$state.params.id) ? false: true
+      vm.expandedTeams = !$state.params.id
     });
   });
 
