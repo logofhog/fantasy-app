@@ -1,7 +1,6 @@
-%div(ng-show = "vm.expandedTeams")
-  %div(ng-repeat='team in vm.teams')
-    %a{'ui-sref' => 'teams.singleTeam({id: team.team_id})'} {{team.city}} {{team.name}}
-%div(ng-show = "!vm.expandedTeams")
+%a{'ui-sref' => 'teams.offense'} Aggregate Offense
+%a{'ui-sref' => 'teams.defense'} Aggregate Defense
+%div
   %span(ng-repeat='team in vm.teams')
     %a{'ui-sref' => 'teams.singleTeam({id: team.team_id})'} {{team.team_id}}
 %div(ui-view)
