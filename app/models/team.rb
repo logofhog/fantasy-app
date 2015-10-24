@@ -41,6 +41,7 @@ class Team < ActiveRecord::Base
     query = "
     select *, (passing_points + rushing_points + receiving_points) as total_points from (
     select opponent,
+    count(distinct gsis_id) as games_played,
     sum(passing_yds) as passing_yds,
     sum(passing_tds) as passing_tds,
     round((sum(passing_tds)*6) + (sum(passing_yds)/30.0)::numeric, 2) as passing_points,
