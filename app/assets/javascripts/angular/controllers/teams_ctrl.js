@@ -11,10 +11,16 @@ angular.module('fantasy_app')
       });
     }
 
+    vm.getAllOffense = function() {
+      apiUtils.getAllOffense().then(function(response) {
+        vm.offense = convertToInt(response.data.teams);
+      });
+    }
+
     function convertToInt(object) {
       angular.forEach(object, function(item) {
         angular.forEach(item, function(val, key) {
-          if (key != 'opponent') {
+          if (key != 'opponent' && key != 'team') {
             item[key] = parseFloat(val);
           }
         });

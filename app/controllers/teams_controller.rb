@@ -22,7 +22,7 @@ class TeamsController < ApplicationController
   end
 
   def all_offense
-    render json: {team: {stat: 1}}
+    render json: {teams: Team.all_offense}
   end
 
   def all_defense
