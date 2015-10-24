@@ -5,24 +5,44 @@
     %th Games Played
     %th
       %a{"ng-click"=>"vm.orderBy==='passing_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_yds'"} Passing Yards
+      %span(ng-show="vm.orderBy==='passing_yds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='passing_yds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='passing_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_tds'"} Passing TDs
+      %span(ng-show="vm.orderBy==='passing_tds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='passing_tds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='passing_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_points'"} Passing Points
+      %span(ng-show="vm.orderBy==='passing_points' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='passing_points' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='rushing_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_yds'"} Rushing Yards
+      %span(ng-show="vm.orderBy==='rushing_yds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='rushing_yds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='rushing_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_tds'"} Rushing TDs
+      %span(ng-show="vm.orderBy==='rushing_tds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='rushing_tds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='rushing_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_points'"} Rushing Points
+      %span(ng-show="vm.orderBy==='rushing_points' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='rushing_points' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='receiving_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_yds'"} Receiving Yards
+      %span(ng-show="vm.orderBy==='receiving_yds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_yds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='receiving_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_tds'"} Receiving TDs
+      %span(ng-show="vm.orderBy==='receiving_tds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_tds' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='receiving_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_points'"} Receiving Points
+      %span(ng-show="vm.orderBy==='receiving_points' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_points' && vm.sortReverse") &#9660
     %th
       %a{"ng-click"=>"vm.orderBy==='total_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='total_points'"} Total Points
+      %span(ng-show="vm.orderBy==='total_points' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='total_points' && vm.sortReverse") &#9660
   %tr(ng-repeat="team in vm.defense | orderBy:vm.orderBy:vm.sortReverse")
     %td {{team.opponent}}
     %td {{team.games_played}}
