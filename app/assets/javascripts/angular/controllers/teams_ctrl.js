@@ -3,6 +3,7 @@ angular.module('fantasy_app')
     var vm = this;
     vm.teams = teams;
     vm.orderBy = 'opponent';
+    vm.sortReverse = false;
 
     vm.getAllDefense = function() {
       apiUtils.getAllDefense().then(function(response) {

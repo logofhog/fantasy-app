@@ -4,26 +4,26 @@
       %a{"ng-click"=>"vm.orderBy='team'"} Vs Team
     %th Games Played
     %th
-      %a{"ng-click"=>"vm.orderBy='passing_yds'"} Passing Yards
+      %a{"ng-click"=>"vm.orderBy==='passing_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_yds'"} Passing Yards
     %th
-      %a{"ng-click"=>"vm.orderBy='passing_tds'"} Passing TDs
+      %a{"ng-click"=>"vm.orderBy==='passing_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_tds'"} Passing TDs
     %th
-      %a{"ng-click"=>"vm.orderBy='passing_points'"} Passing Points
+      %a{"ng-click"=>"vm.orderBy==='passing_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='passing_points'"} Passing Points
     %th
-      %a{"ng-click"=>"vm.orderBy='rushing_yds'"} Rushing Yards
+      %a{"ng-click"=>"vm.orderBy==='rushing_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_yds'"} Rushing Yards
     %th
-      %a{"ng-click"=>"vm.orderBy='rushing_tds'"} Rushing TDs
+      %a{"ng-click"=>"vm.orderBy==='rushing_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_tds'"} Rushing TDs
     %th
-      %a{"ng-click"=>"vm.orderBy='rushing_points'"} Rushing Points
+      %a{"ng-click"=>"vm.orderBy==='rushing_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='rushing_points'"} Rushing Points
     %th
-      %a{"ng-click"=>"vm.orderBy='receiving_yds'"} Receiving Yards
+      %a{"ng-click"=>"vm.orderBy==='receiving_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_yds'"} Receiving Yards
     %th
-      %a{"ng-click"=>"vm.orderBy='receiving_tds'"} Receiving TDs
+      %a{"ng-click"=>"vm.orderBy==='receiving_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_tds'"} Receiving TDs
     %th
-      %a{"ng-click"=>"vm.orderBy='receiving_points'"} Receiving Points
+      %a{"ng-click"=>"vm.orderBy==='receiving_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='receiving_points'"} Receiving Points
     %th
-      %a{"ng-click"=>"vm.orderBy='total_points'"} Total Points
-  %tr(ng-repeat="team in vm.defense | orderBy:vm.orderBy")
+      %a{"ng-click"=>"vm.orderBy==='total_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='total_points'"} Total Points
+  %tr(ng-repeat="team in vm.defense | orderBy:vm.orderBy:vm.sortReverse")
     %td {{team.opponent}}
     %td {{team.games_played}}
     %td {{team.passing_yds}}
