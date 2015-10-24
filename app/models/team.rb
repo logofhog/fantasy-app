@@ -37,6 +37,25 @@ class Team < ActiveRecord::Base
     TEAMS
   end
 
+  def self.all_defense
+    query = "
+    select *, (passing_points + rushing_points + receiving_points) as total_points from (
+    select opponent,
+    sum(passing_yds) as passing_yds,
+    sum(passing_tds) as passing_tds,
+    round((sum(passing_tds)*6) + (sum(passing_yds)/30.0)::numeric, 2) as passing_points,
+    round((sum(rushing_tds)*6) + (sum(rushing_yds)/10.0)::numeric, 2) as rushing_points,
+    round((sum(receiving_tds)*6) + (sum(receiving_yds)/15.0)::numeric, 2) as receiving_points,
+    sum(rushing_yds) as rushing_yds,
+    sum(rushing_tds) as rushing_tds,
+    sum(receiving_yds) as receiving_yds,
+    sum(receiving_tds) as receiving_tds
+    from game_stats group by opponent order by opponent
+    ) t order by total_points
+    "
+    Team.run_query(query)
+  end
+
   def stats_query stat
     "
     #{stat}(passing_yds) as passing_yds,
@@ -53,4 +72,5 @@ class Team < ActiveRecord::Base
     #{stat}(receiving_tar) as receiving_tar
     "
   end
+
 end

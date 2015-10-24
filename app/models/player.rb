@@ -150,11 +150,11 @@ class Player < ActiveRecord::Base
       from players, game_stats where game_stats.player_id = players.player_id
       #{weeks(omit_weeks)} #{show_positions(positions)}
       and players.player_id in (select game_stats.player_id from game_stats
-      group by game_stats.player_id having count(game_stats.player_id)>10)
+      group by game_stats.player_id having count(game_stats.player_id)>4)
       ) as t1, players
       where t1.player_id = players.player_id
       ) as with_ranking
-      group by position, full_name, player_id order by total_points desc limit 25 offset 25
+      group by position, full_name, player_id order by total_points desc limit 25 
       """
       records_array(query, page)
     end

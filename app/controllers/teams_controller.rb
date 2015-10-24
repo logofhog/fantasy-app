@@ -20,5 +20,14 @@ class TeamsController < ApplicationController
   def team
     Team.find(params[:id])
   end
+
+  def all_offense
+    render json: {team: {stat: 1}}
+  end
+
+  def all_defense
+    render json: {teams: Team.all_defense}
+  end
+
 end
 

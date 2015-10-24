@@ -9,9 +9,12 @@ FantasyApp::Application.routes.draw do
   get '/players/:id/season_total', :to => 'players#season_total'
 
   get '/teams', :to => 'teams#index'
+  get '/teams/offense', :to => 'teams#all_offense'
+  get '/teams/defense', :to => 'teams#all_defense'
   get '/teams/:id', :to => 'teams#show'
   get '/teams/:id/weekly_totals', :to => 'teams#weekly_totals'
   get '/teams/:id/players_by_week', :to => 'teams#players_by_week'
+
   get '/replacement_players', :to => 'players#replacement_players'
 
 end

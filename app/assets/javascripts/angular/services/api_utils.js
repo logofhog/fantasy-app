@@ -7,7 +7,27 @@ angular.module('fantasy_app')
       searchPlayers: searchPlayers,
       getTeam: getTeam,
       getAllReplacementPlayers: getAllReplacementPlayers,
-      getPlayerSuggestions: getPlayerSuggestions
+      getPlayerSuggestions: getPlayerSuggestions,
+      getAllOffense: getAllOffense,
+      getAllDefense: getAllDefense
+    }
+
+    function getAllOffense() {
+      return $http.get('/teams/offense')
+        .success(getOffenseSuccess);
+    }
+
+    function getOffenseSuccess(data, status, headers, config){
+      return data;
+    }
+
+    function getAllDefense() {
+      return $http.get('/teams/defense')
+        .success(getDefenseSuccess);
+    }
+
+    function getDefenseSuccess(data, status, headers, config) {
+      return data;
     }
 
     function getPlayerSuggestions(value) {

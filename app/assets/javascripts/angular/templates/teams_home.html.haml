@@ -1,5 +1,5 @@
-%a{'ui-sref' => 'teams.offense'} Aggregate Offense
-%a{'ui-sref' => 'teams.defense'} Aggregate Defense
+%button{'ui-sref' => 'teams.offense'} Aggregate Offense
+%button{'ui-sref' => 'teams.defense', 'ng-click' => 'vm.getAllDefense()'} Aggregate Defense
 %div
   %span(ng-repeat='team in vm.teams')
     %a{'ui-sref' => 'teams.singleTeam({id: team.team_id})'} {{team.team_id}}
