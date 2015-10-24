@@ -1,7 +1,7 @@
 %table.table
   %tr
     %th
-      %a{"ng-click"=>"vm.orderBy='team'"} Team
+      %a{"ng-click"=>"vm.orderBy==='team' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='team'"} Team
     %th Games Played
     %th
       %a{"ng-click"=>"vm.orderBy==='passing_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=true; vm.orderBy='passing_yds'"} Passing Yards
