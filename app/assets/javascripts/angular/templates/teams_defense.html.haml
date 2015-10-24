@@ -1,18 +1,28 @@
-%div this is the team defense page
 %table.table
   %tr
-    %th Vs Team
-    %th Passing Yards
-    %th Passing TDs
-    %th Passing Points
-    %th Rushing Yards
-    %th Rushing TDs
-    %th Rushing Points
-    %th Receiving Yards
-    %th Receiving TDs
-    %th Receiving Points
-    %th Total Points
-  %tr(ng-repeat='team in vm.defense')
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='team'"} Vs Team
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='passing_yds'"} Passing Yards
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='passing_tds'"} Passing TDs
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='passing_points'"} Passing Points
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='rushing_yds'"} Rushing Yards
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='rushing_tds'"} Rushing TDs
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='rushing_points'"} Rushing Points
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='receiving_yds'"} Receiving Yards
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='receiving_tds'"} Receiving TDs
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='receiving_points'"} Receiving Points
+    %th
+      %a{:href => '#', "ng-click"=>"vm.orderBy='total_points'"} Total Points
+  %tr(ng-repeat="team in vm.defense | orderBy:vm.orderBy")
     %td {{team.opponent}}
     %td {{team.passing_yds}}
     %td {{team.passing_tds}}
