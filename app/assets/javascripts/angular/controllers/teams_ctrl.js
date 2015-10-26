@@ -8,6 +8,7 @@ angular.module('fantasy_app')
     vm.getAllDefense = function() {
       apiUtils.getAllDefense().then(function(response) {
         vm.defense = convertToInt(response.data.teams);
+        vm.options = makeOptions(sortByPoints(vm.defense));
       });
     }
 
@@ -15,6 +16,11 @@ angular.module('fantasy_app')
       apiUtils.getAllOffense().then(function(response) {
         vm.offense = convertToInt(response.data.teams);
       });
+    }
+
+    function sortByPoints(teams) {
+      var sorted = teams.sort(function(a, b) {return a.total_points - b.total_points});
+      return sorted
     }
 
     function convertToInt(object) {
@@ -26,6 +32,33 @@ angular.module('fantasy_app')
         });
       });
       return object;
+    }
+
+    function makeOptions(teams) {
+      console.log(teams);
+      var options = {
+        title_text: "Score",
+        categories: teams.map(function(team) { return team.opponent}),
+        tooltip: {
+          shared: true,
+          useHTML: true,
+          formatter: function()  {
+            return 'template'
+          }
+        },
+        series: [
+          { name: 'Passing',
+            data: teams.map(function(team) { return team.passing_points })
+          },
+          { name: 'Rushing',
+            data: teams.map(function(team) { return team.rushing_points })
+          },
+          { name: 'Receiving',
+            data: teams.map(function(team) { return team.receiving_points })
+          }
+        ],
+      }
+      return options
     }
   });
 
