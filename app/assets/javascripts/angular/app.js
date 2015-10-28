@@ -31,6 +31,14 @@ angular.module('fantasy_app', ['ui.router', 'templates', 'ui.bootstrap', 'ui.boo
         url: "/defense",
         templateUrl: 'teams_defense.html'
       })
+      .state('teams.vste', {
+        url: "/defense/vste",
+        templateUrl: 'defense_vs_te.html'
+      })
+      .state('teams.vswrs', {
+        url: "/defense/vswrs",
+        templateUrl: 'defense_vs_wrs.html'
+      })
       .state('teams.singleTeam', {
         url: '/:id',
         templateUrl: 'single_team.html',

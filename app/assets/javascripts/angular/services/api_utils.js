@@ -9,7 +9,27 @@ angular.module('fantasy_app')
       getAllReplacementPlayers: getAllReplacementPlayers,
       getPlayerSuggestions: getPlayerSuggestions,
       getAllOffense: getAllOffense,
-      getAllDefense: getAllDefense
+      getAllDefense: getAllDefense,
+      getWRDefense: getWRDefense,
+      getTEDefense: getTEDefense
+    }
+
+    function getWRDefense() {
+      return $http.get('/teams/wrdefense')
+        .success(getWRDefenseSuccess);
+    }
+
+    function getWRDefenseSuccess(data, status, headers, config) {
+      return data;
+    }
+
+    function getTEDefense() {
+      return $http.get('/teams/tedefense')
+        .success(getTEDefenseSuccess);
+    }
+
+    function getTEDefenseSuccess(data, status, headers, config) {
+      return data;
     }
 
     function getAllOffense() {

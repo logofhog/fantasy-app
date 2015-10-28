@@ -29,5 +29,13 @@ class TeamsController < ApplicationController
     render json: {teams: Team.all_defense}
   end
 
+  def te_defense
+    render json: {teams: 'te defense'}
+  end
+
+  def wr_defense
+    render json: {teams: 'wr defense'}
+  end
+
 end
 

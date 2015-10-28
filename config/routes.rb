@@ -11,6 +11,8 @@ FantasyApp::Application.routes.draw do
   get '/teams', :to => 'teams#index'
   get '/teams/offense', :to => 'teams#all_offense'
   get '/teams/defense', :to => 'teams#all_defense'
+  get '/teams/tedefense', :to => 'teams#te_defense'
+  get '/teams/wrdefense', :to => 'teams#wr_defense'
   get '/teams/:id', :to => 'teams#show'
   get '/teams/:id/weekly_totals', :to => 'teams#weekly_totals'
   get '/teams/:id/players_by_week', :to => 'teams#players_by_week'

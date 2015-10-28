@@ -18,6 +18,18 @@ angular.module('fantasy_app')
       });
     }
 
+    vm.getTEDefense = function() {
+      apiUtils.getTEDefense().then(function(response) {
+        vm.defense = convertToInt(response.data.teams);
+      });
+    }
+
+    vm.getWRDefense = function() {
+      apiUtils.getWRDefense().then(function(response) {
+        vm.defense = convertToInt(response.data.teams);
+      });
+    }
+
     function sortByPoints(teams) {
       var sorted = teams.sort(function(a, b) {return a.total_points - b.total_points});
       return sorted
