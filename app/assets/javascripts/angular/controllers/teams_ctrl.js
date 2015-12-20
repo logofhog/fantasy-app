@@ -59,7 +59,7 @@ angular.module('fantasy_app')
           shared: true,
           useHTML: true,
           formatter: function()  {
-            return 'template'
+            return 'Points VS ' + this.x + ': ' + this.y
           }
         },
         series: [
