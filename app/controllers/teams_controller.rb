@@ -30,11 +30,11 @@ class TeamsController < ApplicationController
   end
 
   def te_defense
-    render json: {teams: 'te defense'}
+    render json: {teams: Team.defense_vs_player('TE', 1)}
   end
 
   def wr_defense
-    render json: {teams: 'wr defense'}
+    render json: {teams: Team.defense_vs_player('WR', params[:rank])}
   end
 
 end

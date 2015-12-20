@@ -78,6 +78,23 @@ class Team < ActiveRecord::Base
     Team.run_query(query)
   end
 
+  def self.defense_vs_player position, rank
+    query = "
+    select sum(receiving_yds) as receiving_yds, sum(receiving_tds) as receiving_tds,
+    round((sum(receiving_tds)*6) + (sum(receiving_yds)/15.0)::numeric, 2) as receiving_points,
+    opponent, count(*) as count from game_stats, (
+    select player_id from(
+    select *, rank() over(partition by team order by receiving_yds desc) from (
+    select players.team as team, players.full_name as full_name, players.player_id, sum(receiving_yds) as receiving_yds
+    from players, game_stats
+    where players.player_id = game_stats.player_id and players.position='#{position}'
+    group by players.full_name, players.player_id, players.team order by team, receiving_yds desc
+    ) e ) r where rank=#{rank}
+    ) s where s.player_id = game_stats.player_id group by game_stats.opponent order by receiving_points
+    "
+    Team.run_query(query)
+  end
+
   def stats_query stat
     "
     #{stat}(passing_yds) as passing_yds,

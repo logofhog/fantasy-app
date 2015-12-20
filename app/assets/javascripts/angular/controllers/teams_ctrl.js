@@ -24,8 +24,8 @@ angular.module('fantasy_app')
       });
     }
 
-    vm.getWRDefense = function() {
-      apiUtils.getWRDefense().then(function(response) {
+    vm.getWRDefense = function(rank) {
+      apiUtils.getWRDefense(rank).then(function(response) {
         vm.defense = convertToInt(response.data.teams);
       });
     }
@@ -47,7 +47,6 @@ angular.module('fantasy_app')
     }
 
     function makeOptions(teams) {
-      console.log(teams);
       var options = {
         title_text: "Score",
         categories: teams.map(function(team) { return team.opponent}),

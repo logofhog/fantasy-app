@@ -14,8 +14,8 @@ angular.module('fantasy_app')
       getTEDefense: getTEDefense
     }
 
-    function getWRDefense() {
-      return $http.get('/teams/wrdefense')
+    function getWRDefense(rank) {
+      return $http.get('/teams/wrdefense?rank=' + rank)
         .success(getWRDefenseSuccess);
     }
 

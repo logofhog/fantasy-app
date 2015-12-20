@@ -45,5 +45,5 @@
       %td {{player.avg_rank}}
       %td {{player.std_dev}}
       %td
-        %span {{player.top_one}}/{{player.top_five}}/{{player.top_ten}}/{{player.top_fifteen}}/{{player.top_twentyfive}}
+        %span {{player.top_one || 0}}/{{player.top_five || 0}}/{{player.top_ten || 0}}/{{player.top_fifteen || 0}}/{{player.top_twentyfive || 0}}
       %td(vorp player="player")
