@@ -1,1 +1,24 @@
-%div defense vs wr's
+%div(stacked_bar_chart options = 'vm.options')
+%table.table
+  %tr
+    %th
+      %a{"ng-click"=>"vm.orderBy==='team' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='team'"} Team
+    %th Games Played
+    %th
+      %a{"ng-click"=>"vm.orderBy==='receiving_yds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=true; vm.orderBy='receiving_yds'"} Receiving Yards
+      %span(ng-show="vm.orderBy==='receiving_yds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_yds' && vm.sortReverse") &#9660
+    %th
+      %a{"ng-click"=>"vm.orderBy==='receiving_tds' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=true; vm.orderBy='receiving_tds'"} Receiving TDs
+      %span(ng-show="vm.orderBy==='receiving_tds' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_tds' && vm.sortReverse") &#9660
+    %th
+      %a{"ng-click"=>"vm.orderBy==='receiving_points' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=true; vm.orderBy='receiving_points'"} Receiving Points
+      %span(ng-show="vm.orderBy==='receiving_points' && !vm.sortReverse") &#9650
+      %span(ng-show="vm.orderBy==='receiving_points' && vm.sortReverse") &#9660
+  %tr(ng-repeat="team in vm.defense | orderBy:vm.orderBy:vm.sortReverse")
+    %td {{team.opponent}}
+    %td {{team.games_played}}
+    %td {{team.receiving_yds}}
+    %td {{team.receiving_tds}}
+    %td {{team.receiving_points}}

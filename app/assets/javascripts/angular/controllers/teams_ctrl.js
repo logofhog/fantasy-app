@@ -8,7 +8,8 @@ angular.module('fantasy_app')
     vm.getAllDefense = function() {
       apiUtils.getAllDefense().then(function(response) {
         vm.defense = convertToInt(response.data.teams);
-        vm.options = makeOptions(sortByPoints(vm.defense));
+        var sorted = sortByPoints(vm.defense, 'total_points')
+        vm.options = makeOptions(sorted);
       });
     }
 
@@ -21,17 +22,21 @@ angular.module('fantasy_app')
     vm.getTEDefense = function() {
       apiUtils.getTEDefense().then(function(response) {
         vm.defense = convertToInt(response.data.teams);
+        var sorted = sortByPoints(vm.defense, 'receiving_points');
+        vm.options = makeOptions(sorted);
       });
     }
 
     vm.getWRDefense = function(rank) {
       apiUtils.getWRDefense(rank).then(function(response) {
         vm.defense = convertToInt(response.data.teams);
+        var sorted = sortByPoints(vm.defense, 'receiving_points');
+        vm.options = makeOptions(sorted);
       });
     }
 
-    function sortByPoints(teams) {
-      var sorted = teams.sort(function(a, b) {return a.total_points - b.total_points});
+    function sortByPoints(teams, sort_by) {
+      var sorted = teams.sort(function(a, b) {return a[sort_by] - b[sort_by]});
       return sorted
     }
 
