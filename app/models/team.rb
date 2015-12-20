@@ -82,7 +82,7 @@ class Team < ActiveRecord::Base
     query = "
     select sum(receiving_yds) as receiving_yds, sum(receiving_tds) as receiving_tds,
     round((sum(receiving_tds)*6) + (sum(receiving_yds)/15.0)::numeric, 2) as receiving_points,
-    opponent, count(*) as count from game_stats, (
+    opponent, count(*) as games_played from game_stats, (
     select player_id from(
     select *, rank() over(partition by team order by receiving_yds desc) from (
     select players.team as team, players.full_name as full_name, players.player_id, sum(receiving_yds) as receiving_yds
