@@ -1,5 +1,13 @@
 body { padding-top: 70px; }
 
+.sticky {
+  position: fixed;
+  top: 68px;
+  z-index: 100;
+  background-color: white;
+  display: none;
+}
+
 .border-right {
   border-right: 1px solid;
 }

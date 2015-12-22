@@ -1,6 +1,7 @@
 %div(stacked_bar_chart options = 'vm.options')
-%table.table
-  %tr
+%table.table.flexitable
+  %tr.flexitrcopy
+  %tr.flexitr
     %th
       %a{"ng-click"=>"vm.orderBy==='team' ? vm.sortReverse=!vm.sortReverse : vm.sortReverse=false; vm.orderBy='team'"} Vs Team
     %th Games Played
