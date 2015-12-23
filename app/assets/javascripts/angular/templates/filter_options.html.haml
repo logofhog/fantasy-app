@@ -7,9 +7,10 @@
   .btn.btn-default(ng-click='togglePosition("QB")') QB
   .btn.btn-default(ng-click='togglePosition("TE")') TE
   .btn.btn-default(ng-click='togglePosition("RB")') RB
-%span(ng-repeat='value in weeks | byKey')
-  #checkbox_container
-    %span {{value}}
-    %input(type='checkbox' ng-model='weeks[value]')
-#weeks_slider
+#weeksContainer
+  %span(ng-repeat='value in weeks | byKey')
+    #checkbox_container
+      %span {{value}}
+      %input(type='checkbox' ng-model='weeks[value]')
+  #weeks_slider
 
