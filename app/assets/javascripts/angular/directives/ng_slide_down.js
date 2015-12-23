@@ -38,6 +38,7 @@ angular.module('fantasy_app')
           return '' + height + 'px';
         };
         show = function () {
+          element.css('display', 'block');
           if (closePromise) {
             $timeout.cancel(closePromise);
           }
