@@ -11,7 +11,6 @@ angular.module('fantasy_app')
         Object.keys(players).map(function(p, i) {
           utils.replacement_players[p] = players[p];
         });
-        console.log(utils.replacement_players);
       },
       get_replacement_players: function(){
         return utils.replacement_players;
