@@ -10,19 +10,15 @@ angular.module('fantasy_app')
 
         vm.replacement_player = {
           qb: {
-            csize: 4,
             offset: 20
           },
           rb: {
-            csize: 5,
             offset: 20
           },
           wr: {
-            csize: 5,
             offset: 30
           },
           te: {
-            csize: 5,
             offset: 15
           }
         }
