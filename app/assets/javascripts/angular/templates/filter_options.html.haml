@@ -2,12 +2,13 @@
 %div(point_values)
 .btn.btn-default(ng-click="update()")Update
 %div
-  .btn.btn-default(ng-click='toggleRedZone()') Red Zone
-  .btn.btn-default(ng-click='toggleSumAvg()') Sum/Avg
-  .btn.btn-default(ng-click='togglePosition("WR")') WR
-  .btn.btn-default(ng-click='togglePosition("QB")') QB
-  .btn.btn-default(ng-click='togglePosition("TE")') TE
-  .btn.btn-default(ng-click='togglePosition("RB")') RB
+  .btn.btn-default{'ng-class' => "query_string_options.is_red_zone ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "toggleRedZone()"} Red Zone
+  .btn.btn-default{'ng-class' => "query_string_options.sum ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "toggleSumAvg('sum')"} Sum
+  .btn.btn-default{'ng-class' => "query_string_options.avg ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "toggleSumAvg('avg')"} Avg
+  .btn.btn-default{'ng-class' => "query_string_options.positions.WR ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "togglePosition('WR')"} WR
+  .btn.btn-default{'ng-class' => "query_string_options.positions.QB ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "togglePosition('QB')"} QB
+  .btn.btn-default{'ng-class' => "query_string_options.positions.TE ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "togglePosition('TE')"} TE
+  .btn.btn-default{'ng-class' => "query_string_options.positions.RB ? 'btn-primary' : 'btn-secondary'", 'ng-click' => "togglePosition('RB')"} RB
 #weeksContainer
   %span(ng-repeat='value in weeks | byKey')
     #checkbox_container

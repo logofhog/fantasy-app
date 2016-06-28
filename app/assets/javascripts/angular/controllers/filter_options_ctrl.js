@@ -1,27 +1,35 @@
 angular.module('fantasy_app')
   .controller('filterOptionsCtrl', function($scope, $rootScope){
 
-    var query_string_options = {
+    $scope.query_string_options = {
       is_red_zone: false,
-      positions: ['QB', 'WR', 'RB', 'TE'],
-      avg: false
+      positions: {
+        'QB': true,
+        'WR': true,
+        'RB': true,
+        'TE': true
+        },
+      avg: false,
+      sum: true
     };
 
     $scope.toggleRedZone = function() {
-      query_string_options.is_red_zone = !query_string_options.is_red_zone;
+      $scope.query_string_options.is_red_zone = !$scope.query_string_options.is_red_zone;
     }
 
     $scope.togglePosition = function(position) {
-      var index = query_string_options.positions.indexOf(position);
-      if(index >=0) {
-        query_string_options.positions.splice(index, 1);
-      } else {
-        query_string_options.positions.push(position);
-      }
+      $scope.query_string_options.positions[position] = !$scope.query_string_options.positions[position];
     }
 
-    $scope.toggleSumAvg = function() {
-      query_string_options.avg = !query_string_options.avg;
+    $scope.toggleSumAvg = function(value) {
+      if(value == 'sum') {
+        $scope.query_string_options.sum = true;
+        $scope.query_string_options.avg = false;
+      }
+      else {
+        $scope.query_string_options.sum = false;
+        $scope.query_string_options.avg = true;
+      }
     }
 
     function weeksArray() {
