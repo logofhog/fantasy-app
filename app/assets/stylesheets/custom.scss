@@ -4,6 +4,27 @@ body { padding-top: 70px; }
   display: none;
 }
 
+.scoring_system {
+  display: inline-block;
+  border: 1px solid black;
+  padding: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.replacement_player_table {
+  display: inline-block;
+  border: 1px solid black;
+  padding: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.scoring_system input {
+  width: 35px;
+}
+
+
 #weeksContainer {
   margin-bottom: 10px;
   margin-left: 10px;

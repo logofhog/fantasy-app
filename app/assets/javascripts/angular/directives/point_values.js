@@ -13,7 +13,8 @@ angular.module('fantasy_app')
           rushing_yds:   10,
           rushing_tds:   6,
           receiving_yds: 15,
-          receiving_tds: 6
+          receiving_tds: 6,
+          reception:    0
         }
       }
     }

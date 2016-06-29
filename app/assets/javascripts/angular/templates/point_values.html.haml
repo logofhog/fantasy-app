@@ -1,9 +1,26 @@
-%div Passing
-%input{:type => 'text', 'ng-model' => 'vm.point_values.passing_yds'} yards per point
-%input{:type => 'text', 'ng-model' => 'vm.point_values.passing_tds'} points per TD
-%div Rushing
-%input{:type => 'text', 'ng-model' => 'vm.point_values.rushing_yds'} yards per point
-%input{:type => 'text', 'ng-model' => 'vm.point_values.rushing_tds'} points per TD
-%div Receiving
-%input{:type => 'text', 'ng-model' => 'vm.point_values.receiving_yds'} yards per point
-%input{:type => 'text', 'ng-model' => 'vm.point_values.receiving_tds'} points per TD
+.scoring_system
+  %table
+    %td Scoring System
+    %tr
+      %td Passing
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.passing_yds'} Yards per point
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.passing_tds'} Points per TD
+    %tr
+      %td Rushing
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.rushing_yds'} Yards per point
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.rushing_tds'} Points per TD
+    %tr
+      %td Receiving
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.receiving_yds'} Yards per point
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.receiving_tds'} Points per TD
+    %tr
+      %td PPR
+      %td
+        %input{:type => 'text', 'ng-model' => 'vm.point_values.reception'} Points per reception
+
