@@ -50,10 +50,10 @@ angular.module('fantasy_app')
 
     function makeUrl() {
       var weeks = weeksArray();
-      var url = "?positions=" + query_string_options.positions.join()
+      var url = "?positions=" + $scope.query_string_options.positions.join()
       if(weeks.length > 0) { url += "&omit_weeks=" + weeks.join() }
-      if(query_string_options.avg) { url += "&is_avg=" + query_string_options.avg}
-      if(query_string_options.is_red_zone) { url +=  "&is_red_zone=" + query_string_options.is_red_zone }
+      if($scope.query_string_options.avg) { url += "&is_avg=" + $scope.query_string_options.avg}
+      if($scope.query_string_options.is_red_zone) { url +=  "&is_red_zone=" + $scope.query_string_options.is_red_zone }
       return url
     }
   });
