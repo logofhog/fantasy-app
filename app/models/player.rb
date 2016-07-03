@@ -4,6 +4,8 @@ class Player < ActiveRecord::Base
   has_many :teams, foreign_key: 'team'
   has_many :games, through: :game_stats, foreign_key: :gsis_id
 
+  PAGE_SIZE = 25
+
   POINT_MULTIPLES = {
     :passing_yds  => 25.0,
     :passing_tds => 4.0,
@@ -154,7 +156,7 @@ class Player < ActiveRecord::Base
       ) as t1, players
       where t1.player_id = players.player_id
       ) as with_ranking
-      group by position, full_name, player_id order by total_points desc limit 25 
+      group by position, full_name, player_id order by total_points desc limit #{PAGE_SIZE} offset ?
       """
       records_array(query, page)
     end
@@ -165,7 +167,8 @@ class Player < ActiveRecord::Base
     end
 
     def records_array(query, page=0)
-      ActiveRecord::Base.connection.execute(sanitize_sql([query, page]))
+      offset = page.to_i * PAGE_SIZE
+      ActiveRecord::Base.connection.execute(sanitize_sql([query, offset]))
     end
 
     def replacement_player position, season_year = 2014, offset = 20

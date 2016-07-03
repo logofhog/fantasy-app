@@ -47,3 +47,7 @@
       %td
         %span {{player.top_one || 0}}/{{player.top_five || 0}}/{{player.top_ten || 0}}/{{player.top_fifteen || 0}}/{{player.top_twentyfive || 0}}
       %td(vorp player="player")
+%span(ng-click="vm.page(0)") First
+%span(ng-click="vm.page(-1)") Previous
+%span(ng-click="vm.page(1)") Next
+

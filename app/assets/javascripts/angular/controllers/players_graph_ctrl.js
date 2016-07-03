@@ -1,12 +1,38 @@
 angular.module('fantasy_app')
   .controller('playersGraphCtrl', function(apiUtils, playerStatUtils, $scope){
     var vm = this;
+    var page = 0;
+    var url = '';
 
     $scope.$on('filter_options_update', function(event, args) {
-      refreshData(args.url);
+      url = args.url;
+      refreshData(url);
     })
 
     refreshData('');
+
+    vm.page = function(value) {
+      if (value === 0) {
+        page = 0;
+      }
+      else {
+        page = Math.max(0, page + value);
+      }
+      var url_with_page = addPageToUrl(page);
+      refreshData(url_with_page);
+    }
+
+    function addPageToUrl(page) {
+      if (page === 0) { return url }
+      var new_url;
+      if (url.length > 0) {
+        new_url += '&page=' + page;
+      }
+      else {
+        new_url = '?page=' + page;
+      }
+      return new_url;
+    }
 
     function refreshData(url) {
       apiUtils.getPlayers(url).then(function(response) {

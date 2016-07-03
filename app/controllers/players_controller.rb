@@ -1,6 +1,7 @@
 class PlayersController < ApplicationController
   def index
-    render json: {:players => Player.all_players(options)}
+    page = params[:page] || 0
+    render json: {:players => Player.all_players(options, page)}
   end
 
   def search
