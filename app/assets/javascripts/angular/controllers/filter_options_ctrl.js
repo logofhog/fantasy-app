@@ -1,5 +1,5 @@
 angular.module('fantasy_app')
-  .controller('filterOptionsCtrl', function($scope, $rootScope){
+  .controller('filterOptionsCtrl', function($scope, $rootScope, $httpParamSerializerJQLike){
 
     $scope.query_string_options = {
       is_red_zone: false,
@@ -10,7 +10,16 @@ angular.module('fantasy_app')
         'TE': true
         },
       avg: false,
-      sum: true
+      sum: true,
+      point_values: {
+        passing_yds:   25,
+        passing_tds:   6,
+        rushing_yds:   10,
+        rushing_tds:   6,
+        receiving_yds: 15,
+        receiving_tds: 6,
+        reception:     0
+      }
     };
 
     $scope.toggleRedZone = function() {
@@ -49,11 +58,9 @@ angular.module('fantasy_app')
     }
 
     function makeUrl() {
+      var url = $httpParamSerializerJQLike($scope.query_string_options);
       var weeks = weeksArray();
-      var url = "?positions=" + $scope.query_string_options.positions.join()
       if(weeks.length > 0) { url += "&omit_weeks=" + weeks.join() }
-      if($scope.query_string_options.avg) { url += "&is_avg=" + $scope.query_string_options.avg}
-      if($scope.query_string_options.is_red_zone) { url +=  "&is_red_zone=" + $scope.query_string_options.is_red_zone }
-      return url
+      return '?' + url
     }
   });

@@ -5,7 +5,6 @@ class Player < ActiveRecord::Base
   has_many :games, through: :game_stats, foreign_key: :gsis_id
 
   PAGE_SIZE = 25
-
   POINT_MULTIPLES = {
     :passing_yds  => 25.0,
     :passing_tds => 4.0,
@@ -17,13 +16,34 @@ class Player < ActiveRecord::Base
     :receiving_rec => 2.0
   }
 
-  def week_stats
+  STAT_CATEGORIES = [
+    "top_one",
+    "top_five",
+    "top_ten",
+    "top_fifteen",
+    "top_twentyfive",
+    "passing_yds",
+    "passing_tds",
+    "passing_attempts",
+    "passing_completions",
+    "passing_int",
+    "rushing_yds",
+    "rushing_tds",
+    "rushing_att",
+    "receiving_yds",
+    "receiving_rec",
+    "receiving_tds",
+    "receiving_tar",
+    "total_points"
+  ]
+
+  def week_stats(point_values)
     stats = self.game_stats
     query = "
       select * from (
       select game_stats.*,
       rank() over
-      (partition by game_stats.week order by #{Player.total_points} DESC) as ranked
+      (partition by game_stats.week order by #{Player.total_points(point_values)} DESC) as ranked
       from players, game_stats where game_stats.player_id = players.player_id and
       players.position = (select position from players where player_id = '#{player_id}')
       ) as t1
@@ -44,27 +64,10 @@ class Player < ActiveRecord::Base
       red_zone = options[:is_red_zone] ? 'rz_' : ''
       stat = options[:is_avg] ? 'avg' : 'sum'
       season_year = 2014
-      positions = options[:positions].split(',') || ['QB', 'RB', 'WR', 'TE']
-      positions = positions.map{ |p| "'" + p + "'" }.join(',')
+      positions = options[:positions].map{ |p| "'" + p + "'" }.join(',')
       sort_by = options[:sort_by] || 'total_points'
       omit_weeks = options[:omit_weeks] || false
-
-#      query = "
-#      SELECT players.player_id, players.full_name, players.position, count(*) as games_played,
-#      #{stats_query(stat)}, #{total_points(stat)} as total_points
-#      FROM players
-#      INNER JOIN #{red_zone}game_stats on players.player_id = #{red_zone}game_stats.player_id
-#      WHERE players.player_id IN (
-#      SELECT #{red_zone}game_stats.player_id FROM #{red_zone}game_stats
-#      GROUP BY #{red_zone}game_stats.player_id HAVING count(#{red_zone}game_stats.player_id)> 10)
-#      AND season_type= 'Regular' #{weeks(omit_weeks)}
-#      #{show_positions(positions)} AND season_year = #{season_year}
-#      GROUP BY players.player_id, players.full_name, players.position
-#      ORDER BY #{sort_by} DESC limit(25) offset(?);
-#      "
-#
-#      records_array(query, page)
-#    end
+      point_values = options[:point_values]
 
       query = """
     select
@@ -72,33 +75,33 @@ class Player < ActiveRecord::Base
         round(avg(ranking)::numeric, 3) as avg_rank,
         player_id,
         full_name,
-        sum(top_one) as top_one,
-        sum(top_five) as top_five,
-        sum(top_ten) as top_ten,
-        sum(top_fifteen) as top_fifteen,
-        sum(top_twentyfive) as top_twentyfive,
         position,
-        sum(passing_yds) as passing_yds,
-        sum(passing_tds) as passing_tds,
-        sum(passing_attempts) as passing_attempts,
-        sum(passing_completions) as passing_completions,
-        sum(passing_int) as passing_int,
-        sum(rushing_yds) as rushing_yds,
-        sum(rushing_tds) as rushing_tds,
-        sum(rushing_att) as rushing_att,
-        sum(receiving_yds) as receiving_yds,
-        sum(receiving_rec) as receiving_rec,
-        sum(receiving_tds) as receiving_tds,
-        sum(receiving_tar) as receiving_tar,
+        #{stat}(top_one) as top_one,
+        #{stat}(top_five) as top_five,
+        #{stat}(top_ten) as top_ten,
+        #{stat}(top_fifteen) as top_fifteen,
+        #{stat}(top_twentyfive) as top_twentyfive,
+        #{stat}(passing_yds) as passing_yds,
+        #{stat}(passing_tds) as passing_tds,
+        #{stat}(passing_attempts) as passing_attempts,
+        #{stat}(passing_completions) as passing_completions,
+        #{stat}(passing_int) as passing_int,
+        #{stat}(rushing_yds) as rushing_yds,
+        #{stat}(rushing_tds) as rushing_tds,
+        #{stat}(rushing_att) as rushing_att,
+        #{stat}(receiving_yds) as receiving_yds,
+        #{stat}(receiving_rec) as receiving_rec,
+        #{stat}(receiving_tds) as receiving_tds,
+        #{stat}(receiving_tar) as receiving_tar,
         round((
-        sum(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
-        sum(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
-        sum(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
-        sum(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
-        sum(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
-        sum(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
-        sum(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
-        sum(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+        #{stat}(passing_yds/#{point_values[:passing_yds]}) +
+        #{stat}(passing_tds*#{point_values[:passing_tds]}) +
+        #{stat}(passing_int*#{point_values[:passing_int]}) +
+        #{stat}(rushing_yds/#{point_values[:rushing_yds]}) +
+        #{stat}(rushing_tds*#{point_values[:rushing_tds]}) +
+        #{stat}(receiving_yds/#{point_values[:receiving_yds]}) +
+        #{stat}(receiving_tds*#{point_values[:receiving_tds]}) +
+        #{stat}(receiving_rec/#{point_values[:receiving_rec]})
         )::numeric, 2) as total_points,
         count(*) as games_played
     from (
@@ -139,14 +142,14 @@ class Player < ActiveRecord::Base
       select players.full_name, players.position, game_stats.*,
       rank() over
         (partition by game_stats.week, players.position order by round((
-      (passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
-      (passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
-      (passing_int*#{POINT_MULTIPLES[:passing_int]}) +
-      (rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
-      (rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
-      (receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
-      (receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
-      (receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+      (passing_yds/#{point_values[:passing_yds]}) +
+      (passing_tds*#{point_values[:passing_tds]}) +
+      (passing_int*#{point_values[:passing_int]}) +
+      (rushing_yds/#{point_values[:rushing_yds]}) +
+      (rushing_tds*#{point_values[:rushing_tds]}) +
+      (receiving_yds/#{point_values[:receiving_yds]}) +
+      (receiving_tds*#{point_values[:receiving_tds]}) +
+      (receiving_rec/#{point_values[:receiving_rec]})
         )::numeric, 2) desc)
       as ranked
       from players, game_stats where game_stats.player_id = players.player_id
@@ -171,40 +174,35 @@ class Player < ActiveRecord::Base
       ActiveRecord::Base.connection.execute(sanitize_sql([query, offset]))
     end
 
-    def replacement_player position, season_year = 2014, offset = 20
+    def replacement_player position, point_values, offset = 20
+      total_points_query = total_points(point_values, 'avg')
       query = "
-      SELECT avg(p.total_points) from (
-      SELECT players.player_id, players.full_name, players.position,
-      #{total_points('avg')} as total_points
-      FROM players
-      INNER JOIN game_stats on players.player_id = game_stats.player_id
-      WHERE players.player_id IN (
-      SELECT game_stats.player_id FROM game_stats
-      GROUP BY game_stats.player_id HAVING count(game_stats.player_id)> 10)
-      AND season_type= 'Regular'
-      AND position = '#{position}' AND season_year = #{season_year}
-      GROUP BY players.player_id, players.full_name, players.position
-      ORDER BY total_points DESC LIMIT 5 OFFSET #{offset}
-      ) AS p
+      select
+        full_name,
+        #{total_points_query} as total_points
+      from game_stats, player
+      where player.position = '#{position}' and game_stats.player_id = player.player_id
+      group by player.full_name, player.position HAVING count(game_stats.player_id)> 12
+      order by total_points desc limit 1 offset #{offset}
       "
       result = records_array(query)
       round(result)
     end
 
     def round result
-      result[0]["avg"].to_f.round(2)
+      result[0]["total_points"].to_f.round(2)
     end
 
-    def total_points stat = ''
+    def total_points point_values, stat = ''
       "round((
-      #{stat}(passing_yds/#{POINT_MULTIPLES[:passing_yds]}) +
-      #{stat}(passing_tds*#{POINT_MULTIPLES[:passing_tds]}) +
-      #{stat}(passing_int*#{POINT_MULTIPLES[:passing_int]}) +
-      #{stat}(rushing_yds/#{POINT_MULTIPLES[:rushing_yds]}) +
-      #{stat}(rushing_tds*#{POINT_MULTIPLES[:rushing_tds]}) +
-      #{stat}(receiving_yds/#{POINT_MULTIPLES[:receiving_yds]}) +
-      #{stat}(receiving_tds*#{POINT_MULTIPLES[:receiving_tds]}) +
-      #{stat}(receiving_rec/#{POINT_MULTIPLES[:receiving_rec]})
+      #{stat}(passing_yds/#{point_values[:passing_yds]}) +
+      #{stat}(passing_tds*#{point_values[:passing_tds]}) +
+      #{stat}(passing_int*#{point_values[:passing_int]}) +
+      #{stat}(rushing_yds/#{point_values[:rushing_yds]}) +
+      #{stat}(rushing_tds*#{point_values[:rushing_tds]}) +
+      #{stat}(receiving_yds/#{point_values[:receiving_yds]}) +
+      #{stat}(receiving_tds*#{point_values[:receiving_tds]}) +
+      #{stat}(receiving_rec/#{point_values[:receiving_rec]})
       )::numeric, 2)"
     end
 

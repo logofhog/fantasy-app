@@ -1,1 +1,4 @@
-%a{:href => '', 'ng-click' => 'initPlayerModal(player)'} {{player.full_name}} ({{player.position}})
+%div(ng-class="has_class_compare() ? 'comparing' : ''")
+  %input(type='checkbox' ng-checked='$parent.isPlayerInCompare(player)')
+  %a{:href => ''}
+    %span{'ng-click' => 'initPlayerModal(player)'} {{player.full_name}} ({{player.position}}) {{player.in_compare}}

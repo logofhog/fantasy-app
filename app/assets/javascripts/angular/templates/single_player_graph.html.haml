@@ -8,4 +8,5 @@
 .btn.btn-default.btn-xs{'ng-click' => "change_stat('receiving_rec')"} Receptions
 .btn.btn-default.btn-xs{'ng-click' => "change_stat('ranked')"} Rank
 #player_container
+.btn.btn-default(ng-repeat="player in $parent.players_to_graph" ng-click='removePlayer(player)') {{player.player.full_name}} (remove)
 %div(single_player_graph items="items")

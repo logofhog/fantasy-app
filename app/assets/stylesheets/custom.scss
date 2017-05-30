@@ -1,7 +1,75 @@
 body { padding-top: 70px; }
 
+tr:hover td {
+  background-color: #f0f9ff;
+  border-bottom: 1px solid grey;
+  border-top: 1px solid grey;
+}
+
+.playerComparisonSelector {
+  position: fixed;
+  bottom: 0;
+  margin: auto;
+}
+
+.table_row {
+  cursor: default;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f0f9ff+0,cbebff+47,a1dbff+100;Blue+3D+%2313 */
+  background: #f0f9ff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #f0f9ff 0%, #cbebff 47%, #a1dbff 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  #f0f9ff 0%,#cbebff 47%,#a1dbff 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  #f0f9ff 0%,#cbebff 47%,#a1dbff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', endColorstr='#a1dbff',GradientType=0 ); /* IE6-9 */
+}
+
+.player_search_bar {
+  width: 50%;
+  margin: auto;
+  display: block;
+  margin-top: 5%
+}
+
+#search_bar {
+  border: 1px solid grey;
+  width: 100%;
+  height: 38px;
+}
+
+.player_search_button {
+  margin-top: 7px;
+  width: 40%;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+  background-color: #f2f2f2;
+  color: #222;
+}
+
+.player_search_button:hover {
+  background-color: #F2F3DD;
+  color: black;
+}
+
+#search_bar:focus, input:focus {
+  border: 1px solid #4d90fe;
+  outline: none;
+}
+
+.navbar-nav {
+  list-style-type: none;
+}
+
+.navbar-btn {
+  min-width: 200px;
+  margin-left: 5px;
+}
+
 .dontshow {
   display: none;
+}
+
+.comparing {
+  background-color: yellow;
 }
 
 .scoring_system {

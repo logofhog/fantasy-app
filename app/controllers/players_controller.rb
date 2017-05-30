@@ -1,7 +1,13 @@
 class PlayersController < ApplicationController
+  skip_before_filter :set_filter_options, only: [:replacement_players, :replacement_player]
+
   def index
     page = params[:page] || 0
-    render json: {:players => Player.all_players(options, page)}
+    players = Player.all_players(options, page).as_json
+    if options[:is_avg]
+      players.each{|player| Player::STAT_CATEGORIES.each{|stat| player[stat] = '%.1f' % player[stat] if player[stat]}}
+    end
+    render json: {:players => players}
   end
 
   def search
@@ -19,10 +25,10 @@ class PlayersController < ApplicationController
 
   def replacement_players
     render json: {
-      QB: Player.replacement_player('QB', 2014, params[:qb][:offset]),
-      RB: Player.replacement_player('RB', 2014, params[:rb][:offset]),
-      WR: Player.replacement_player('WR', 2014, params[:wr][:offset]),
-      TE: Player.replacement_player('TE', 2014, params[:te][:offset])
+      QB: Player.replacement_player('QB', options[:point_values], params[:qb][:offset]),
+      RB: Player.replacement_player('RB', options[:point_values], params[:rb][:offset]),
+      WR: Player.replacement_player('WR', options[:point_values], params[:wr][:offset]),
+      TE: Player.replacement_player('TE', options[:point_values], params[:te][:offset])
     }
   end
 
@@ -32,32 +38,23 @@ class PlayersController < ApplicationController
   end
 
   def by_week
-    stats = player.week_stats
+    stats = player.week_stats(options[:point_values])
     render json: {player: player, stats: stats}
   end
 
   def replacement_player
     position = params[:position]
-    render json: {player: Player.replacement_player(position)}
+    render json: {player: Player.replacement_player(position, options[:point_values])}
   end
-
-  private
 
   def player
     Player.find(params[:id])
   end
 
+  private
+
   def page
     params[:page] || 1
   end
 
-  def options
-    {
-    :is_red_zone => params[:is_red_zone] || false,
-    :omit_weeks  => params[:omit_weeks],
-    :positions    => params[:positions] || "QB,RB,WR,TE",
-    :is_avg      => params[:is_avg] || false,
-    :sort_by     => params[:sort_by]
-    }
-  end
 end

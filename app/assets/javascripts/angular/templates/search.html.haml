@@ -1,3 +1,5 @@
-%input{:type => "text", :id => "search_bar", :placeholder => "Search for a player: e.g. Matt Ryan",
-  "ng-model"=>"selection.selected", "typeahead"=>"player as player.full_name for player in getSuggestions($viewValue)",
-  "typeahead-min-length" => "3", "typeahead-on-select" => "selectPlayer(selection.selected.player_id)"}
+.player_search_bar
+  %input{:type => "text", :id => "search_bar", :placeholder => "Search for a player: e.g. Matt Ryan",
+    "ng-model"=>"selection.selected", "typeahead"=>"player as player.full_name for player in getSuggestions($viewValue)",
+    "typeahead-min-length" => "3", "typeahead-on-select" => "selectPlayer(selection.selected.player_id)"}
+  .btn.btn-primary.player_search_button Search

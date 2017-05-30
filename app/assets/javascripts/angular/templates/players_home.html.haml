@@ -1,53 +1,55 @@
 %div(players_graph)
-%table.table.table-striped.flexitable
+%div(comparison_graph)
+%table.table.flexitable
   %thead
     %tr
-      %th
-        %th.table-bordered{:colspan => 3} Passing
-        %th.table-bordered{:colspan => 3} Rushing
-        %th.table-bordered{:colspan => 4} Receiving
-        %th.table-bordered{:colspan => 6} Advanced
+      %th.table-bordered.btn.btn-default(ng-click="vm.showAdvanced()") Show Advanced
+      %th.table-bordered(ng-show="!vm.showAdvancedToggle"){:colspan => 3} Passing
+      %th.table-bordered(ng-show="!vm.showAdvancedToggle"){:colspan => 3} Rushing
+      %th.table-bordered(ng-show="!vm.showAdvancedToggle"){:colspan => 4} Receiving
+      %th.table-bordered(ng-show="vm.showAdvancedToggle"){:colspan => 6} Advanced
     %tr.flexitrcopy
     %tr.flexitr
       %th Player
-      %th Yds
-      %th TDs
-      %th Int
-      %th Yds
-      %th TDs
-      %th Att
-      %th Yds
-      %th TDs
-      %th Rec
-      %th Tar
-      %th T. Pts
-      %th GP
-      %th Avg Rank
-      %th Std Dev
-      %th 1/5/10/15/25
-      %th VORP
+      %th(ng-show="!vm.showAdvancedToggle") Yds
+      %th(ng-show="!vm.showAdvancedToggle") TDs
+      %th(ng-show="!vm.showAdvancedToggle") Int
+      %th(ng-show="!vm.showAdvancedToggle") Yds
+      %th(ng-show="!vm.showAdvancedToggle") TDs
+      %th(ng-show="!vm.showAdvancedToggle") Att
+      %th(ng-show="!vm.showAdvancedToggle") Yds
+      %th(ng-show="!vm.showAdvancedToggle") TDs
+      %th(ng-show="!vm.showAdvancedToggle") Rec
+      %th(ng-show="!vm.showAdvancedToggle") Tar
+      %th(ng-show="!vm.showAdvancedToggle") T. Pts
+      %th(ng-show="!vm.showAdvancedToggle") GP
+      %th(ng-show="vm.showAdvancedToggle") Avg Rank
+      %th(ng-show="vm.showAdvancedToggle") Std Dev
+      %th(ng-show="vm.showAdvancedToggle") 1/5/10/15/25
+      %th(ng-show="vm.showAdvancedToggle") VORP
   %tbody
-    %tr(ng-repeat="player in vm.players")
+    %tr.table_row(ng-repeat="player in vm.players")
       %td
-        %div(single_player)
-          %td {{player.passing_yds}}
-      %td {{player.passing_tds}}
-      %td.border-right {{player.passing_int}}
-      %td {{player.rushing_yds}}
-      %td {{player.rushing_tds}}
-      %td.border-right {{player.rushing_att}}
-      %td {{player.receiving_yds}}
-      %td {{player.receiving_tds}}
-      %td {{player.receiving_rec}}
-      %td.border-right {{player.receiving_tar}}
-      %td {{player.total_points}}
-      %td {{player.games_played}}
-      %td {{player.avg_rank}}
-      %td {{player.std_dev}}
-      %td
+        %div(single_player player='player')
+      %td(ng-show="!vm.showAdvancedToggle") {{player.passing_yds}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.passing_tds}}
+      %td.border-right(ng-show="!vm.showAdvancedToggle") {{player.passing_int}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.rushing_yds}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.rushing_tds}}
+      %td.border-right(ng-show="!vm.showAdvancedToggle") {{player.rushing_att}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.receiving_yds}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.receiving_tds}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.receiving_rec}}
+      %td.border-right(ng-show="!vm.showAdvancedToggle") {{player.receiving_tar}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.total_points}}
+      %td(ng-show="!vm.showAdvancedToggle") {{player.games_played}}
+      %td(ng-show="vm.showAdvancedToggle") {{player.avg_rank}}
+      %td(ng-show="vm.showAdvancedToggle") {{player.std_dev}}
+      %td(ng-show="vm.showAdvancedToggle")
         %span {{player.top_one || 0}}/{{player.top_five || 0}}/{{player.top_ten || 0}}/{{player.top_fifteen || 0}}/{{player.top_twentyfive || 0}}
-      %td(vorp player="player")
-%span(ng-click="vm.page(0)") First
-%span(ng-click="vm.page(-1)") Previous
-%span(ng-click="vm.page(1)") Next
+      %td(vorp player="player" ng-show="vm.showAdvancedToggle")
+%span.btn.btn-info(ng-click="vm.page(0)") First
+%span.btn.btn-info(ng-click="vm.page(-1)") Previous
+%span.btn.btn-info(ng-click="vm.page(1)") Next
+%div.btn.btn-default.playerComparisonSelector{'ng-click' => 'initComparisonModal()'} ^^ Comparison ^^
 

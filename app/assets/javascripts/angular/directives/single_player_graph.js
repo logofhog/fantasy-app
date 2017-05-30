@@ -25,7 +25,6 @@ angular.module('fantasy_app')
           var height = $(window).height() * .5;
           var reversed = (title == "Weekly Rank");
           var minYAxis = (title == "Weekly Rank") ? 1 : null;
-          console.log(minYAxis);
           $('#player_container').highcharts({
             chart: {
                     type: 'spline',

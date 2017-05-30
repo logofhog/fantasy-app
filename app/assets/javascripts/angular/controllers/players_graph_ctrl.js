@@ -1,13 +1,14 @@
 angular.module('fantasy_app')
-  .controller('playersGraphCtrl', function(apiUtils, playerStatUtils, $scope){
+  .controller('playersGraphCtrl', function(apiUtils, playerStatUtils, comparePlayerService, $scope){
     var vm = this;
     var page = 0;
     var url = '';
+    vm.showAdvancedToggle = false;
 
     $scope.$on('filter_options_update', function(event, args) {
       url = args.url;
       refreshData(url);
-    })
+    });
 
     refreshData('');
 
@@ -20,6 +21,18 @@ angular.module('fantasy_app')
       }
       var url_with_page = addPageToUrl(page);
       refreshData(url_with_page);
+    }
+
+    vm.showAdvanced = function(){
+      vm.showAdvancedToggle= !vm.showAdvancedToggle;
+    }
+
+    $scope.makeComparison = function(players) {
+      var new_players = [];
+      for (var p in players) {new_players.push(players[p])}
+      $scope.$apply(function() {
+        vm.options = makeOptions(new_players);
+      });
     }
 
     function addPageToUrl(page) {
