@@ -93,16 +93,8 @@ class Player < ActiveRecord::Base
         #{stat}(receiving_rec) as receiving_rec,
         #{stat}(receiving_tds) as receiving_tds,
         #{stat}(receiving_tar) as receiving_tar,
-        round((
-        #{stat}(passing_yds/#{point_values[:passing_yds]}) +
-        #{stat}(passing_tds*#{point_values[:passing_tds]}) +
-        #{stat}(passing_int*#{point_values[:passing_int]}) +
-        #{stat}(rushing_yds/#{point_values[:rushing_yds]}) +
-        #{stat}(rushing_tds*#{point_values[:rushing_tds]}) +
-        #{stat}(receiving_yds/#{point_values[:receiving_yds]}) +
-        #{stat}(receiving_tds*#{point_values[:receiving_tds]}) +
-        #{stat}(receiving_rec/#{point_values[:receiving_rec]})
-        )::numeric, 2) as total_points,
+        #{total_points(point_values, stat)}
+         as total_points,
         count(*) as games_played
     from (
     select
@@ -149,7 +141,7 @@ class Player < ActiveRecord::Base
       (rushing_tds*#{point_values[:rushing_tds]}) +
       (receiving_yds/#{point_values[:receiving_yds]}) +
       (receiving_tds*#{point_values[:receiving_tds]}) +
-      (receiving_rec/#{point_values[:receiving_rec]})
+      (receiving_rec*#{point_values[:receiving_rec]})
         )::numeric, 2) desc)
       as ranked
       from players, game_stats where game_stats.player_id = players.player_id
@@ -195,14 +187,14 @@ class Player < ActiveRecord::Base
 
     def total_points point_values, stat = ''
       "round((
-      #{stat}(passing_yds/#{point_values[:passing_yds]}) +
-      #{stat}(passing_tds*#{point_values[:passing_tds]}) +
-      #{stat}(passing_int*#{point_values[:passing_int]}) +
-      #{stat}(rushing_yds/#{point_values[:rushing_yds]}) +
-      #{stat}(rushing_tds*#{point_values[:rushing_tds]}) +
-      #{stat}(receiving_yds/#{point_values[:receiving_yds]}) +
-      #{stat}(receiving_tds*#{point_values[:receiving_tds]}) +
-      #{stat}(receiving_rec/#{point_values[:receiving_rec]})
+      cast(#{stat}(passing_yds) as float)/#{point_values[:passing_yds]} +
+      cast(#{stat}(passing_tds) as float)*#{point_values[:passing_tds]} +
+      cast(#{stat}(passing_int) as float)*#{point_values[:passing_int]} +
+      cast(#{stat}(rushing_yds) as float)/#{point_values[:rushing_yds]} +
+      cast(#{stat}(rushing_tds) as float)*#{point_values[:rushing_tds]} +
+      cast(#{stat}(receiving_yds) as float)/#{point_values[:receiving_yds]} +
+      cast(#{stat}(receiving_tds) as float)*#{point_values[:receiving_tds]} +
+      cast(#{stat}(receiving_rec) as float)*#{point_values[:receiving_rec]}
       )::numeric, 2)"
     end
 

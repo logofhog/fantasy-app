@@ -17,14 +17,24 @@ class ApplicationController < ActionController::Base
       :sort_by     => params[:sort_by],
       :point_values => point_value_params
     }
+    set_cookies if params[:point_values]
     @options
   end
 
+  def set_cookies
+    cookies[:point_values] = point_value_params.to_json
+  end
+
   def point_value_params
-    return Player::POINT_MULTIPLES unless params[:point_values]
-    Player::POINT_MULTIPLES.with_indifferent_access.merge(options_params[:point_values].select do |stat, _|
-      Player::POINT_MULTIPLES.keys.include?(stat.to_sym)
-    end)
+    if params[:point_values]
+      Player::POINT_MULTIPLES.with_indifferent_access.merge(options_params[:point_values].select do |stat, _|
+        Player::POINT_MULTIPLES.keys.include?(stat.to_sym)
+      end)
+    elsif cookies[:point_values]
+      JSON.parse(cookies[:point_values]).with_indifferent_access
+    else
+      Player::POINT_MULTIPLES
+    end
   end
 
   def positions_params
@@ -37,7 +47,7 @@ class ApplicationController < ActionController::Base
                   :avg,
                   :sum,
                   {positions: ['QB', 'WR', 'RB', 'TE']},
-                  {point_values: [:passing_yds, :passing_tds, :rushing_yds, :rushing_tds, :receiving_yds, :receiving_tds, :reception]}
+                  {point_values: [:passing_yds, :passing_tds, :rushing_yds, :rushing_tds, :receiving_yds, :receiving_tds, :receiving_rec]}
                  )
   end
 end

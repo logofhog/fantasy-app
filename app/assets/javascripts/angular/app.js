@@ -1,4 +1,4 @@
-angular.module('fantasy_app', ['ui.router', 'templates', 'ui.bootstrap', 'ui.bootstrap.modal'])
+angular.module('fantasy_app', ['ui.router', 'templates', 'ui.bootstrap', 'ui.bootstrap.modal', 'ngCookies'])
   .config(function($stateProvider, $urlRouterProvider){
     $stateProvider
       .state('search', {

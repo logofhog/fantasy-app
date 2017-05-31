@@ -1,6 +1,27 @@
 angular.module('fantasy_app')
-  .service('playerStatUtils', function(){
+  .service('playerStatUtils', function($cookies){
+    defaultPointValues = {
+      passing_yds : 25.0,
+      passing_tds : 4.0,
+      passing_int : -1.0,
+      rushing_yds : 10.0,
+      rushing_tds : 6.0,
+      receiving_yds : 10.0,
+      receiving_tds : 6.0,
+      receiving_rec : 0.0
+    }
+
+    getPointValues = function(){
+      var point_values = $cookies.get('point_values');
+      if(point_values == undefined) {
+        point_values = defaultPointValues;
+      } else {
+        point_values = JSON.parse(point_values)
+      }
+      return point_values;
+    }
     var utils = {
+      point_values: getPointValues,
       stat_names:  {
         passing_yds : 'Passing Yards',
         passing_tds : 'Passing TDs',
@@ -14,7 +35,7 @@ angular.module('fantasy_app')
       removeUselessKeys:   function(player) {
         var stats = $.map(player, function(value, index) {
           if (value === '0' || !(index in utils.stat_names)) { return }
-          return {stat_name: index, stat_value: parseFloat(value)}
+          return {stat_name: index, stat_value: value}
         });
         return stats
       },
@@ -31,26 +52,28 @@ angular.module('fantasy_app')
       },
       getPassing: function(items){
         var data = items.map(function(player) {
-          var total = (parseFloat(player.passing_yds) /25.0) +
-                      (parseFloat(player.passing_tds) * 4) +
-                      (parseFloat(player.passing_int) * -1)
+          var total = ((player.passing_yds) / utils.point_values().passing_yds) +
+                      ((player.passing_tds) * utils.point_values().passing_tds) +
+                      ((player.passing_int) * -1.0)
           return total
         });
         return data
       },
       getRushing: function(items){
         var data = items.map(function(player) {
-          var total = (parseFloat(player.rushing_yds) /10.0) +
-                      (parseFloat(player.rushing_tds) * 6)
+          var total = ((player.rushing_yds) / utils.point_values().rushing_yds) +
+                      ((player.rushing_tds) * utils.point_values().rushing_tds)
           return total
         });
         return data
       },
       getReceiving: function(items){
         var data = items.map(function(player) {
-          var total = (parseFloat(player.receiving_yds) / 10.0) +
-                      (parseFloat(player.receiving_tds) * 6) +
-                      (parseFloat(player.receiving_rec) / 2.0)
+          var total = ((player.receiving_yds) / utils.point_values().receiving_yds) +
+                      ((player.receiving_tds) * utils.point_values().receiving_tds)
+          if(utils.point_values().receiving_rec > 0){
+            total = total + ((player.receiving_rec) * utils.point_values().receiving_rec)
+          }
           return total
         });
         return data

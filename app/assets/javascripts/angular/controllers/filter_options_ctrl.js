@@ -1,5 +1,5 @@
 angular.module('fantasy_app')
-  .controller('filterOptionsCtrl', function($scope, $rootScope, $httpParamSerializerJQLike){
+  .controller('filterOptionsCtrl', function($scope, $rootScope, $httpParamSerializerJQLike, playerStatUtils){
 
     $scope.query_string_options = {
       is_red_zone: false,
@@ -11,15 +11,7 @@ angular.module('fantasy_app')
         },
       avg: false,
       sum: true,
-      point_values: {
-        passing_yds:   25,
-        passing_tds:   6,
-        rushing_yds:   10,
-        rushing_tds:   6,
-        receiving_yds: 15,
-        receiving_tds: 6,
-        reception:     0
-      }
+      point_values: playerStatUtils.point_values()
     };
 
     $scope.toggleRedZone = function() {
