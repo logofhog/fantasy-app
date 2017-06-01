@@ -85,10 +85,10 @@ class Team < ActiveRecord::Base
     opponent, count(*) as games_played from game_stats, (
     select player_id from(
     select *, rank() over(partition by team order by receiving_yds desc) from (
-    select players.team as team, players.full_name as full_name, players.player_id, sum(receiving_yds) as receiving_yds
+    select game_stats.team as team, players.full_name as full_name, players.player_id, sum(receiving_yds) as receiving_yds
     from players, game_stats
     where players.player_id = game_stats.player_id and players.position='#{position}'
-    group by players.full_name, players.player_id, players.team order by team, receiving_yds desc
+    group by players.full_name, players.player_id, game_stats.team order by team, receiving_yds desc
     ) e ) r where rank=#{rank}
     ) s where s.player_id = game_stats.player_id group by game_stats.opponent order by receiving_points
     "

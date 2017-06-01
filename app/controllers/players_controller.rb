@@ -5,7 +5,7 @@ class PlayersController < ApplicationController
     page = params[:page] || 0
     players = Player.all_players(options, page).as_json
     if options[:is_avg]
-      players.each{|player| Player::STAT_CATEGORIES.each{|stat| player[stat] = '%.1f' % player[stat] if player[stat]}}
+      players.each{|player| Player::STAT_CATEGORIES.each{|stat| player[stat] = '%.2f' % player[stat] if player[stat]}}
     end
     render json: {:players => players}
   end

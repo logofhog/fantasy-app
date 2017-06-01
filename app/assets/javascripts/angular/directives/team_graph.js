@@ -45,7 +45,10 @@ angular.module('fantasy_app')
                 cursor: 'pointer',
                 dataLabels: {
                   enabled: true,
-                  format: '<b>{point.name}</b>:{point.y} {point.percentage:.1f}%',
+                  formatter: function(){
+                    if(this.point.percentage < 1) {return null;}
+                    return '<b>'+this.point.name+'</b>:'+this.point.y+' '+Math.round(this.point.percentage*10)/10+'%'
+                  },
                   style: {
                     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                   }
