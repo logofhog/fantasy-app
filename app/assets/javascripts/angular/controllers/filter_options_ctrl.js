@@ -14,6 +14,8 @@ angular.module('fantasy_app')
       point_values: playerStatUtils.point_values()
     };
 
+    $scope.weeks;
+
     $scope.toggleRedZone = function() {
       $scope.query_string_options.is_red_zone = !$scope.query_string_options.is_red_zone;
     }
@@ -21,6 +23,11 @@ angular.module('fantasy_app')
     $scope.togglePosition = function(position) {
       $scope.query_string_options.positions[position] = !$scope.query_string_options.positions[position];
     }
+
+    $scope.update_weeks = function(weeks) {
+      $scope.weeks = weeks;
+      console.log('updating the weeks!');
+      }
 
     $scope.toggleSumAvg = function(value) {
       if(value == 'sum') {

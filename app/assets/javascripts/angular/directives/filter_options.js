@@ -2,7 +2,6 @@ angular.module('fantasy_app')
   .directive('weekOptions', function(){
     return {
       templateUrl: 'weeks_selector.html',
-      //controller: 'filterOptionsCtrl',
       link: function(scope, elem, attrs){
 
         scope.weeks = {
@@ -20,12 +19,12 @@ angular.module('fantasy_app')
           snap: true
         });
 
-
         $("#weeks_slider").on('set', function() {
           var slider_weeks = $("#weeks_slider").val();
           var start = parseInt(slider_weeks[0]);
           var end = parseInt(slider_weeks[1]);
           updateWeeks(start, end, false);
+          scope.update_weeks(scope.weeks);
           scope.$apply()
         });
 
