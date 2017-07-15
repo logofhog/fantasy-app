@@ -1,0 +1,15 @@
+%a.btn.btn-default(ng-click="show_positions = !show_positions") Positions
+%a.btn.btn-default(ng-click="show_options_view = !show_options_view") Show options view(weeks)
+%a.btn.btn-default(ng-click="show_scoring = !show_scoring") Scoring
+%a.btn.btn-default(ng-click="show_replacement_player = !show_replacement_player") Replacement Player
+%a.btn.btn-default(ng-click="show_point_values = !show_point_values") Point Values
+%div.dontshow(ng_slide_down='show_options_view' duration='.2')
+  %div(week_options)
+%div.dontshow(ng_slide_down='show_positions' duration='.2')
+  %div(positions)
+%div.dontshow(ng_slide_down='show_scoring' duration='.2')
+  %div(scoring)
+%div.dontshow(ng_slide_down='show_replacement_player' duration='.2')
+  %div(replacement_player)
+%div.dontshow(ng_slide_down='show_point_values' duration='.2')
+  %div(point_values)

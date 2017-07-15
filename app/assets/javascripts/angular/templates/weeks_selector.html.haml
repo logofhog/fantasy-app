@@ -1,0 +1,7 @@
+#weeksContainer
+  %span(ng-repeat='value in weeks | byKey')
+    #checkbox_container
+      %span {{value}}
+      %input(type='checkbox' ng-model='weeks[value]')
+  #weeks_slider
+

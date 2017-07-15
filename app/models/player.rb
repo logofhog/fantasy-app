@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
     :rushing_tds => 6.0,
     :receiving_yds => 10.0,
     :receiving_tds => 6.0,
-    :receiving_rec => 2.0
+    :receiving_rec => 0.0
   }
 
   STAT_CATEGORIES = [
@@ -157,8 +157,8 @@ class Player < ActiveRecord::Base
     end
 
     def search_by_partial partial
-      query = "SELECT players.full_name, players.player_id FROM players WHERE players.full_name ILIKE ?"
-      records_array(query, "%#{partial}%")
+      query = "SELECT players.full_name, players.player_id FROM players WHERE players.full_name ILIKE ? order by sorting_score desc;"
+      ActiveRecord::Base.connection.execute(sanitize_sql([query, "%#{partial}%"]))
     end
 
     def records_array(query, page=0)

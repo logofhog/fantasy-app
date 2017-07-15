@@ -1,8 +1,8 @@
 angular.module('fantasy_app')
-  .directive('filterOptions', function(){
+  .directive('weekOptions', function(){
     return {
-      templateUrl: 'filter_options.html',
-      controller: 'filterOptionsCtrl',
+      templateUrl: 'weeks_selector.html',
+      //controller: 'filterOptionsCtrl',
       link: function(scope, elem, attrs){
 
         scope.weeks = {
